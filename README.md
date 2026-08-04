@@ -9,7 +9,7 @@ never stores raw evidence — only a hash of whatever was checked, anchored
 on-chain alongside the identity, credential, and permission records it
 belongs to.
 
-- **Website:** identiq.app (placeholder)
+- **Website:** [identiq.app](https://identiq.netlify.app/) (placeholder)
 - **Network:** Stellar / Soroban, testnet
 - **License:** MIT
 
