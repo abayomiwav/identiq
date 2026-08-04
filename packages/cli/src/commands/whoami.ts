@@ -1,4 +1,4 @@
-import { requireConfig } from '../config';
+import { requireConfig } from '../config/config';
 
 export interface WhoamiResult {
   email: string;

@@ -4,7 +4,7 @@ import { createApp, listApps, rotateApiKey } from './commands/apps';
 import { login } from './commands/login';
 import { logout } from './commands/logout';
 import { whoami } from './commands/whoami';
-import { CliApiError } from './api';
+import { CliApiError } from './services/api';
 
 const program = new Command();
 

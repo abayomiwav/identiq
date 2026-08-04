@@ -1,5 +1,5 @@
-import { apiRequest } from '../api';
-import { CliConfig, resolveApiUrl, saveConfig } from '../config';
+import { apiRequest } from '../services/api';
+import { CliConfig, resolveApiUrl, saveConfig } from '../config/config';
 
 export interface LoginOptions {
   email: string;

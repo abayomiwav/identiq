@@ -1,4 +1,4 @@
-import { clearConfig } from '../config';
+import { clearConfig } from '../config/config';
 
 export function logout(): void {
   clearConfig();

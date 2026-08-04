@@ -1,5 +1,5 @@
-import { apiRequest } from '../api';
-import { requireConfig } from '../config';
+import { apiRequest } from '../services/api';
+import { requireConfig } from '../config/config';
 
 export interface RemoteApp {
   id: string;
