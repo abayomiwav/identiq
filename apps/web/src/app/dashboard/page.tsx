@@ -1,14 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { apiFetch, ApiError } from "@/lib/api";
-import { useIdentity } from "@/lib/use-identity";
-import { connectWallet, signWithWallet, WalletError } from "@/lib/wallet";
-
-interface CreateIdentityResponse {
-  identity: { id: string };
-  unsignedXdr: string;
-}
+import { apiFetch, ApiError } from "@/services/api";
+import { connectWallet, signWithWallet, WalletError } from "@/services/wallet";
+import { useIdentity } from "@/hooks/use-identity";
+import type { CreateIdentityResponse } from "@/types/identity";
 
 export default function DashboardOverviewPage() {
   const { identity, reputation, loading, error, refresh } = useIdentity();

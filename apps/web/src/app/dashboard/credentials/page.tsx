@@ -2,17 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { CredentialType } from "@identiq/shared";
-import { apiFetch, ApiError } from "@/lib/api";
-
-interface Credential {
-  id: string;
-  type: CredentialType;
-  status: "ACTIVE" | "EXPIRED" | "REVOKED";
-  evidenceHash: string;
-  issuedAt: string;
-  expiresAt: string | null;
-  chainCredentialId: string | null;
-}
+import { apiFetch, ApiError } from "@/services/api";
+import type { Credential } from "@/types/credential";
 
 const CREDENTIAL_TYPES = Object.values(CredentialType);
 

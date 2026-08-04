@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/logo-mark";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/auth-context";
 
 const LINKS = [
   { href: "/dashboard", label: "Overview" },

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
-import { AuthProvider } from "@/lib/auth-context";
+import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({

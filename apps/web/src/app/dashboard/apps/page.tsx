@@ -1,22 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { apiFetch, ApiError } from "@/lib/api";
-
-interface RemoteApp {
-  id: string;
-  name: string;
-  redirectUris: string[];
-  apiKeyPrefix: string;
-  webhookUrl: string | null;
-  webhookSecret: string;
-  createdAt: string;
-}
-
-interface CreatedApp {
-  app: RemoteApp;
-  apiKey: string;
-}
+import { apiFetch, ApiError } from "@/services/api";
+import type { CreatedApp, RemoteApp } from "@/types/app";
 
 export default function DeveloperAppsPage() {
   const [apps, setApps] = useState<RemoteApp[] | null>(null);

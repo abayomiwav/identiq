@@ -1,17 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { CredentialType } from "@identiq/shared";
-import { apiFetch, ApiError } from "@/lib/api";
-
-interface Grant {
-  id: string;
-  appId: string;
-  credentialType: CredentialType;
-  status: "ACTIVE" | "REVOKED" | "EXPIRED";
-  grantedAt: string;
-  expiresAt: string | null;
-}
+import { apiFetch, ApiError } from "@/services/api";
+import type { Grant } from "@/types/permission";
 
 export default function PermissionsPage() {
   const [grants, setGrants] = useState<Grant[] | null>(null);

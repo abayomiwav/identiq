@@ -1,27 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { apiFetch, ApiError } from "./api";
-
-export interface Identity {
-  id: string;
-  userId: string;
-  stellarPublicKey: string | null;
-  chainIdentityId: string | null;
-  createdAt: string;
-}
-
-export interface Reputation {
-  identityId: string;
-  score: number;
-  factors: {
-    accountAgeDays: number;
-    activeCredentialCount: number;
-    activePermissionGrantCount: number;
-    revokedCredentialCount: number;
-  };
-  computedAt: string;
-}
+import { apiFetch, ApiError } from "@/services/api";
+import type { Identity, Reputation } from "@/types/identity";
 
 export function useIdentity() {
   const [identity, setIdentity] = useState<Identity | null | undefined>(undefined);

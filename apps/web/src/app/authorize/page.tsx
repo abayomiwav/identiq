@@ -3,14 +3,9 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LogoMark } from "@/components/logo-mark";
-import { useAuth } from "@/lib/auth-context";
-import { apiFetch, ApiError } from "@/lib/api";
-
-interface PublicApp {
-  id: string;
-  name: string;
-  redirectUris: string[];
-}
+import { useAuth } from "@/context/auth-context";
+import { apiFetch, ApiError } from "@/services/api";
+import type { PublicApp } from "@/types/app";
 
 function AuthorizeContent() {
   const params = useSearchParams();

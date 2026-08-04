@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { LogoMark } from "./logo-mark";
-import { useAuth } from "@/lib/auth-context";
+import { useAuth } from "@/context/auth-context";
 
 const NAV_LINKS = [
   { href: "/#how-it-works", label: "How it works" },

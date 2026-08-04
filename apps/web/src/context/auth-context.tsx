@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { apiFetch, getToken, setToken } from "./api";
+import { apiFetch, getToken, setToken } from "@/services/api";
 
 export interface AuthUser {
   id: string;

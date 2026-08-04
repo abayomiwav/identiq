@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { AuthLayout } from "@/components/auth-layout";
 import { TextField } from "@/components/text-field";
-import { useAuth } from "@/lib/auth-context";
-import { ApiError } from "@/lib/api";
+import { useAuth } from "@/context/auth-context";
+import { ApiError } from "@/services/api";
 
 function LoginForm() {
   const router = useRouter();
