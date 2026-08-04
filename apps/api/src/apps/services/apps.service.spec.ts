@@ -1,6 +1,6 @@
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
 import { AppsService } from './apps.service';
 
 describe('AppsService', () => {

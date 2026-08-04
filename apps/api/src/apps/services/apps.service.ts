@@ -8,9 +8,9 @@ import {
   generateApiKey,
   generateWebhookSecret,
   hashApiKey,
-} from '../common/crypto.util';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateAppDto } from './dto/create-app.dto';
+} from '../../common/utils/crypto.util';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { CreateAppDto } from '../dto/create-app.dto';
 
 export type SanitizedApp = Omit<IdentiqApp, 'apiKeyHash'>;
 

@@ -8,11 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AppsService } from './apps.service';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
-import type { AuthenticatedUser } from '../common/decorators/current-user.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CreateAppDto } from './dto/create-app.dto';
+import { AppsService } from '../services/apps.service';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import type { AuthenticatedUser } from '../../common/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { CreateAppDto } from '../dto/create-app.dto';
 
 @ApiTags('apps')
 @Controller('apps')
