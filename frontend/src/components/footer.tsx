@@ -39,6 +39,8 @@ export function Footer() {
             <div>
               <h3 className="eyebrow">Company</h3>
               <ul className="mt-3 space-y-2 text-sm text-muted">
+                <li><Link href="/about" className="hover:text-foreground">About</Link></li>
+                <li><Link href="/security" className="hover:text-foreground">Security</Link></li>
                 <li><a href="https://github.com/abayomiwav/identiq" className="hover:text-foreground">GitHub</a></li>
               </ul>
             </div>
