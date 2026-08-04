@@ -1,6 +1,7 @@
 interface LogoMarkProps {
   size?: number;
   className?: string;
+  variant?: "light" | "dark";
 }
 
 /**
@@ -10,7 +11,10 @@ interface LogoMarkProps {
  * color, no gradient — matches the mark to the rest of the flat, bordered
  * visual system rather than standing apart as a glossy icon.
  */
-export function LogoMark({ size = 32, className }: LogoMarkProps) {
+export function LogoMark({ size = 32, className, variant = "light" }: LogoMarkProps) {
+  const stroke = variant === "dark" ? "#818cf8" : "#2f3ee0";
+  const cutout = variant === "dark" ? "#0b0b12" : "#fafaf9";
+
   return (
     <svg
       width={size}
@@ -22,11 +26,11 @@ export function LogoMark({ size = 32, className }: LogoMarkProps) {
       role="img"
       aria-label="Identiq"
     >
-      <line x1="24" y1="11" x2="11" y2="35" stroke="#2f3ee0" strokeWidth="3" strokeLinecap="round" />
-      <line x1="24" y1="11" x2="37" y2="35" stroke="#2f3ee0" strokeWidth="3" strokeLinecap="round" />
-      <circle cx="11" cy="35" r="5.5" fill="#fafaf9" stroke="#2f3ee0" strokeWidth="2.5" />
-      <circle cx="37" cy="35" r="5.5" fill="#fafaf9" stroke="#2f3ee0" strokeWidth="2.5" />
-      <circle cx="24" cy="11" r="7.5" fill="#2f3ee0" />
+      <line x1="24" y1="11" x2="11" y2="35" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+      <line x1="24" y1="11" x2="37" y2="35" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+      <circle cx="11" cy="35" r="5.5" fill={cutout} stroke={stroke} strokeWidth="2.5" />
+      <circle cx="37" cy="35" r="5.5" fill={cutout} stroke={stroke} strokeWidth="2.5" />
+      <circle cx="24" cy="11" r="7.5" fill={stroke} />
     </svg>
   );
 }

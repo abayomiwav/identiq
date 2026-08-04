@@ -54,7 +54,7 @@ export default function PermissionsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="eyebrow">Dashboard</p>
+        <p className="eyebrow !text-accent-amber">Dashboard</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight">Connected apps</h1>
         <p className="mt-1 text-sm text-muted">
           Apps you&apos;ve granted access to. Revoke any of these at any time — access stops immediately.
@@ -63,7 +63,8 @@ export default function PermissionsPage() {
 
       {error && <Alert>{error}</Alert>}
 
-      <Panel className="overflow-hidden">
+      <Panel className="relative overflow-hidden">
+        <span className="absolute inset-x-0 top-0 z-10 h-1 bg-accent-amber" />
         {grants === null ? (
           <div className="p-6">
             <Spinner />

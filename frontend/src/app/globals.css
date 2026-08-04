@@ -9,6 +9,12 @@
   --card: #ffffff;
   --accent: #2f3ee0;
   --accent-foreground: #ffffff;
+  --accent-teal: #0d9488;
+  --accent-amber: #b45309;
+  --accent-rose: #be123c;
+  --surface-dark: #0b0b12;
+  --surface-dark-foreground: #f2f2f5;
+  --surface-dark-border: #26262f;
 }
 
 @theme inline {
@@ -20,6 +26,12 @@
   --color-card: var(--card);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-rose: var(--accent-rose);
+  --color-surface-dark: var(--surface-dark);
+  --color-surface-dark-foreground: var(--surface-dark-foreground);
+  --color-surface-dark-border: var(--surface-dark-border);
   --font-sans: var(--font-body);
   --font-mono: var(--font-label);
 }

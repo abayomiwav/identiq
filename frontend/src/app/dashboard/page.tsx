@@ -86,9 +86,9 @@ export default function DashboardOverviewPage() {
         </Panel>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <StatCard label="Wallet reputation" value={reputation ? `${reputation.score}/100` : "—"} />
-          <StatCard label="Active credentials" value={String(reputation?.factors.activeCredentialCount ?? 0)} />
-          <StatCard label="Active permission grants" value={String(reputation?.factors.activePermissionGrantCount ?? 0)} />
+          <StatCard tone="accent" label="Wallet reputation" value={reputation ? `${reputation.score}/100` : "—"} />
+          <StatCard tone="teal" label="Active credentials" value={String(reputation?.factors.activeCredentialCount ?? 0)} />
+          <StatCard tone="amber" label="Active permission grants" value={String(reputation?.factors.activePermissionGrantCount ?? 0)} />
           <Panel className="p-6 sm:col-span-2 lg:col-span-3">
             <h2 className="eyebrow">Identity</h2>
             <dl className="mt-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">

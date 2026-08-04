@@ -81,15 +81,16 @@ export default function CredentialsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="eyebrow">Dashboard</p>
+        <p className="eyebrow !text-accent-teal">Dashboard</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight">Credentials</h1>
         <p className="mt-1 text-sm text-muted">
           Each credential is anchored on-chain by a hash of the evidence checked — never the evidence itself.
         </p>
       </div>
 
-      <form onSubmit={handleIssue} className="panel p-6">
-        <h2 className="eyebrow">Issue a credential</h2>
+      <form onSubmit={handleIssue} className="panel relative overflow-hidden p-6">
+        <span className="absolute inset-x-0 top-0 h-1 bg-accent-teal" />
+        <h2 className="eyebrow !text-accent-teal">Issue a credential</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-[200px_1fr_auto]">
           <Select value={type} onChange={(e) => setType(e.target.value as CredentialType)}>
             {CREDENTIAL_TYPES.map((t) => (

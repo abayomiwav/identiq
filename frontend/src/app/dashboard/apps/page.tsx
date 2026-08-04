@@ -71,7 +71,7 @@ export default function DeveloperAppsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <p className="eyebrow">Dashboard</p>
+        <p className="eyebrow !text-accent-rose">Dashboard</p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight">My apps</h1>
         <p className="mt-1 text-sm text-muted">
           Register a website or app you run to receive an API key, a webhook secret, and access to the consent
@@ -93,8 +93,9 @@ export default function DeveloperAppsPage() {
         </Panel>
       )}
 
-      <form onSubmit={handleCreate} className="panel p-6">
-        <h2 className="eyebrow">Register a new app</h2>
+      <form onSubmit={handleCreate} className="panel relative overflow-hidden p-6">
+        <span className="absolute inset-x-0 top-0 h-1 bg-accent-rose" />
+        <h2 className="eyebrow !text-accent-rose">Register a new app</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <input
             required
