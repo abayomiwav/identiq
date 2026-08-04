@@ -4,7 +4,7 @@ import {
   WEBHOOK_SIGNATURE_HEADER,
   WebhookEventType,
 } from '@identiq/shared';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
 import { WebhooksService } from './webhooks.service';
 
 describe('WebhooksService', () => {

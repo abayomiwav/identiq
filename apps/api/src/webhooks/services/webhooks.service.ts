@@ -7,8 +7,8 @@ import {
   WebhookPayload,
 } from '@identiq/shared';
 import { IdentiqApp } from '@prisma/client';
-import { signWebhookPayload } from '../common/crypto.util';
-import { PrismaService } from '../prisma/prisma.service';
+import { signWebhookPayload } from '../../common/utils/crypto.util';
+import { PrismaService } from '../../prisma/services/prisma.service';
 
 @Injectable()
 export class WebhooksService {
