@@ -1,0 +1,27 @@
+{
+  "name": "@identiq/cli",
+  "version": "0.1.0",
+  "description": "Identiq developer CLI — manage your apps, API keys, and webhooks from the terminal.",
+  "license": "MIT",
+  "bin": {
+    "identiq": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && chmod +x dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.0"
+  }
+}
