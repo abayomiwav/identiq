@@ -6,6 +6,7 @@ import { LogoMark } from "@/components/logo-mark";
 import { useAuth } from "@/context/auth-context";
 import { apiFetch, ApiError } from "@/services/api";
 import type { PublicApp } from "@/types/app";
+import { Alert, Button, Panel, Spinner } from "@/components/ui";
 
 function AuthorizeContent() {
   const params = useSearchParams();
@@ -64,11 +65,11 @@ function AuthorizeContent() {
   }
 
   if (!appId || !redirectUri || credentialTypes.length === 0) {
-    return <p className="text-sm text-red-700">This authorization link is missing required parameters.</p>;
+    return <Alert>This authorization link is missing required parameters.</Alert>;
   }
 
   return (
-    <div className="corner-ticks panel relative w-full max-w-md p-8">
+    <Panel cornerTicks className="w-full max-w-md p-8">
       <div className="flex justify-center">
         <LogoMark size={32} />
       </div>
@@ -89,32 +90,28 @@ function AuthorizeContent() {
         ))}
       </ul>
 
-      {error && <p className="mt-4 text-sm text-red-700">{error}</p>}
+      {error && (
+        <div className="mt-4">
+          <Alert>{error}</Alert>
+        </div>
+      )}
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <button
-          onClick={handleApprove}
-          disabled={busy || !app}
-          className="flex-1 border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background disabled:opacity-60"
-        >
+        <Button className="flex-1" onClick={handleApprove} disabled={busy || !app}>
           {busy ? "Granting…" : "Approve"}
-        </button>
-        <button
-          onClick={handleDeny}
-          disabled={busy}
-          className="flex-1 border border-border-strong px-4 py-2.5 text-sm font-medium text-foreground hover:bg-foreground hover:text-background"
-        >
+        </Button>
+        <Button className="flex-1" variant="outline" onClick={handleDeny} disabled={busy}>
           Deny
-        </button>
+        </Button>
       </div>
-    </div>
+    </Panel>
   );
 }
 
 export default function AuthorizePage() {
   return (
     <main className="hairline-grid relative flex min-h-screen flex-1 items-center justify-center px-4 py-16">
-      <Suspense fallback={<p className="eyebrow !text-muted">Loading…</p>}>
+      <Suspense fallback={<Spinner />}>
         <AuthorizeContent />
       </Suspense>
     </main>

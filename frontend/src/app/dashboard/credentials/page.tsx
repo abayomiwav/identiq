@@ -4,8 +4,30 @@ import { useCallback, useEffect, useState } from "react";
 import { CredentialType } from "@identiq/shared";
 import { apiFetch, ApiError } from "@/services/api";
 import type { Credential } from "@/types/credential";
+import {
+  Alert,
+  Badge,
+  Button,
+  EmptyState,
+  Panel,
+  Select,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeadRow,
+  TableRow,
+} from "@/components/ui";
 
 const CREDENTIAL_TYPES = Object.values(CredentialType);
+
+const STATUS_TONE = {
+  ACTIVE: "success",
+  EXPIRED: "warning",
+  REVOKED: "danger",
+} as const;
 
 export default function CredentialsPage() {
   const [credentials, setCredentials] = useState<Credential[] | null>(null);
@@ -69,17 +91,13 @@ export default function CredentialsPage() {
       <form onSubmit={handleIssue} className="panel p-6">
         <h2 className="eyebrow">Issue a credential</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-[200px_1fr_auto]">
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value as CredentialType)}
-            className="border border-border-strong bg-background px-3 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none"
-          >
+          <Select value={type} onChange={(e) => setType(e.target.value as CredentialType)}>
             {CREDENTIAL_TYPES.map((t) => (
               <option key={t} value={t}>
                 {t}
               </option>
             ))}
-          </select>
+          </Select>
           <input
             required
             placeholder="Evidence reference (e.g. verification session id)"
@@ -87,67 +105,62 @@ export default function CredentialsPage() {
             onChange={(e) => setEvidence(e.target.value)}
             className="border border-border-strong bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none"
           />
-          <button
-            type="submit"
-            disabled={busy}
-            className="border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background disabled:opacity-60"
-          >
+          <Button type="submit" disabled={busy}>
             {busy ? "Issuing…" : "Issue"}
-          </button>
+          </Button>
         </div>
       </form>
 
-      {error && <p className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+      {error && <Alert>{error}</Alert>}
 
-      <div className="panel overflow-hidden">
+      <Panel className="overflow-hidden">
         {credentials === null ? (
-          <p className="p-6 text-sm text-muted">Loading…</p>
+          <div className="p-6">
+            <Spinner />
+          </div>
         ) : credentials.length === 0 ? (
-          <p className="p-6 text-sm text-muted">No credentials yet.</p>
+          <EmptyState>No credentials yet.</EmptyState>
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="eyebrow">
-              <tr className="border-b border-border-strong">
-                <th className="px-6 py-3 font-medium">Type</th>
-                <th className="px-6 py-3 font-medium">Status</th>
-                <th className="px-6 py-3 font-medium">Issued</th>
-                <th className="px-6 py-3 font-medium">Expires</th>
-                <th className="px-6 py-3" />
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHead>
+              <TableHeadRow>
+                <TableHeadCell>Type</TableHeadCell>
+                <TableHeadCell>Status</TableHeadCell>
+                <TableHeadCell>Issued</TableHeadCell>
+                <TableHeadCell>Expires</TableHeadCell>
+                <TableHeadCell />
+              </TableHeadRow>
+            </TableHead>
+            <TableBody>
               {credentials.map((credential) => (
-                <tr key={credential.id} className="border-b border-border last:border-0">
-                  <td className="px-6 py-3 font-mono text-xs">{credential.type}</td>
-                  <td className="px-6 py-3">
-                    <StatusBadge status={credential.status} />
-                  </td>
-                  <td className="px-6 py-3 text-muted">{new Date(credential.issuedAt).toLocaleDateString()}</td>
-                  <td className="px-6 py-3 text-muted">
-                    {credential.expiresAt ? new Date(credential.expiresAt).toLocaleDateString() : "Never"}
-                  </td>
-                  <td className="px-6 py-3 text-right">
+                <TableRow key={credential.id}>
+                  <TableCell>
+                    <span className="font-mono text-xs">{credential.type}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Badge tone={STATUS_TONE[credential.status]}>{credential.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-muted">{new Date(credential.issuedAt).toLocaleDateString()}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-muted">
+                      {credential.expiresAt ? new Date(credential.expiresAt).toLocaleDateString() : "Never"}
+                    </span>
+                  </TableCell>
+                  <TableCell align="right">
                     {credential.status === "ACTIVE" && (
-                      <button onClick={() => handleRevoke(credential.id)} className="text-xs text-red-700 underline underline-offset-2 hover:no-underline">
+                      <Button variant="ghost" className="!p-0 text-xs underline underline-offset-2 hover:no-underline" onClick={() => handleRevoke(credential.id)}>
                         Revoke
-                      </button>
+                      </Button>
                     )}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
-      </div>
+      </Panel>
     </div>
   );
-}
-
-function StatusBadge({ status }: { status: Credential["status"] }) {
-  const styles: Record<Credential["status"], string> = {
-    ACTIVE: "border-emerald-600 text-emerald-700",
-    EXPIRED: "border-amber-600 text-amber-700",
-    REVOKED: "border-red-600 text-red-700",
-  };
-  return <span className={`border px-2 py-0.5 font-mono text-[11px] uppercase ${styles[status]}`}>{status}</span>;
 }

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { apiFetch, ApiError } from "@/services/api";
 import type { CreatedApp, RemoteApp } from "@/types/app";
+import { Alert, Button, EmptyState, Panel, Spinner } from "@/components/ui";
 
 export default function DeveloperAppsPage() {
   const [apps, setApps] = useState<RemoteApp[] | null>(null);
@@ -78,17 +79,17 @@ export default function DeveloperAppsPage() {
       </div>
 
       {revealedKey && (
-        <div className="corner-ticks panel relative p-6">
+        <Panel cornerTicks className="p-6">
           <p className="text-sm font-medium text-foreground">
             API key for {revealedKey.appName} — save it now, it won&apos;t be shown again
           </p>
           <code className="mt-3 block break-all border border-border-strong bg-[#0a0a0a] px-3 py-2.5 text-xs text-emerald-400">
             {revealedKey.apiKey}
           </code>
-          <button onClick={() => setRevealedKey(null)} className="mt-3 text-xs text-muted hover:text-foreground">
+          <Button variant="ghost" className="mt-3 !p-0 text-xs" onClick={() => setRevealedKey(null)}>
             Dismiss
-          </button>
-        </div>
+          </Button>
+        </Panel>
       )}
 
       <form onSubmit={handleCreate} className="panel p-6">
@@ -117,43 +118,35 @@ export default function DeveloperAppsPage() {
             className="border border-border-strong bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted/60 focus:border-accent focus:outline-none sm:col-span-2"
           />
         </div>
-        <button
-          type="submit"
-          disabled={busy}
-          className="mt-4 border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background disabled:opacity-60"
-        >
+        <Button type="submit" disabled={busy} className="mt-4">
           {busy ? "Creating…" : "Create app"}
-        </button>
+        </Button>
       </form>
 
-      {error && <p className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+      {error && <Alert>{error}</Alert>}
 
       <div className="flex flex-col gap-4">
         {apps === null ? (
-          <p className="text-sm text-muted">Loading…</p>
+          <Spinner />
         ) : apps.length === 0 ? (
-          <p className="panel p-6 text-sm text-muted">No apps yet. Register one above.</p>
+          <Panel>
+            <EmptyState>No apps yet. Register one above.</EmptyState>
+          </Panel>
         ) : (
           apps.map((app) => (
-            <div key={app.id} className="panel p-6">
+            <Panel key={app.id} className="p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h3 className="text-base font-medium text-foreground">{app.name}</h3>
                   <p className="mt-1 font-mono text-xs text-muted">key {app.apiKeyPrefix}…</p>
                 </div>
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => handleRotate(app.id, app.name)}
-                    className="border border-border-strong px-3 py-1.5 text-xs text-foreground hover:bg-foreground hover:text-background"
-                  >
+                  <Button variant="outline" className="px-3 py-1.5 text-xs" onClick={() => handleRotate(app.id, app.name)}>
                     Rotate key
-                  </button>
-                  <button
-                    onClick={() => handleDelete(app.id)}
-                    className="border border-red-300 px-3 py-1.5 text-xs text-red-700 hover:bg-red-50"
-                  >
+                  </Button>
+                  <Button variant="danger" className="px-3 py-1.5 text-xs" onClick={() => handleDelete(app.id)}>
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </div>
               <dl className="mt-4 grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
@@ -166,7 +159,7 @@ export default function DeveloperAppsPage() {
                   <dd className="mt-1 font-mono text-foreground">{app.webhookUrl ?? "Not configured"}</dd>
                 </div>
               </dl>
-            </div>
+            </Panel>
           ))
         )}
       </div>

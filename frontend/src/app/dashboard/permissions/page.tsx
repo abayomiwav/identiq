@@ -3,6 +3,27 @@
 import { useCallback, useEffect, useState } from "react";
 import { apiFetch, ApiError } from "@/services/api";
 import type { Grant } from "@/types/permission";
+import {
+  Alert,
+  Badge,
+  Button,
+  EmptyState,
+  Panel,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeadRow,
+  TableRow,
+} from "@/components/ui";
+
+const STATUS_TONE = {
+  ACTIVE: "success",
+  EXPIRED: "warning",
+  REVOKED: "danger",
+} as const;
 
 export default function PermissionsPage() {
   const [grants, setGrants] = useState<Grant[] | null>(null);
@@ -40,49 +61,59 @@ export default function PermissionsPage() {
         </p>
       </div>
 
-      {error && <p className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+      {error && <Alert>{error}</Alert>}
 
-      <div className="panel overflow-hidden">
+      <Panel className="overflow-hidden">
         {grants === null ? (
-          <p className="p-6 text-sm text-muted">Loading…</p>
+          <div className="p-6">
+            <Spinner />
+          </div>
         ) : grants.length === 0 ? (
-          <p className="p-6 text-sm text-muted">
+          <EmptyState>
             No apps have been granted access yet. Grants are created when you approve an app&apos;s request at{" "}
             <code className="text-xs">/authorize</code>.
-          </p>
+          </EmptyState>
         ) : (
-          <table className="w-full text-left text-sm">
-            <thead className="eyebrow">
-              <tr className="border-b border-border-strong">
-                <th className="px-6 py-3 font-medium">App</th>
-                <th className="px-6 py-3 font-medium">Credential</th>
-                <th className="px-6 py-3 font-medium">Status</th>
-                <th className="px-6 py-3 font-medium">Expires</th>
-                <th className="px-6 py-3" />
-              </tr>
-            </thead>
-            <tbody>
+          <Table>
+            <TableHead>
+              <TableHeadRow>
+                <TableHeadCell>App</TableHeadCell>
+                <TableHeadCell>Credential</TableHeadCell>
+                <TableHeadCell>Status</TableHeadCell>
+                <TableHeadCell>Expires</TableHeadCell>
+                <TableHeadCell />
+              </TableHeadRow>
+            </TableHead>
+            <TableBody>
               {grants.map((grant) => (
-                <tr key={grant.id} className="border-b border-border last:border-0">
-                  <td className="px-6 py-3 font-mono text-xs">{grant.appId}</td>
-                  <td className="px-6 py-3 font-mono text-xs">{grant.credentialType}</td>
-                  <td className="px-6 py-3 text-muted">{grant.status}</td>
-                  <td className="px-6 py-3 text-muted">
-                    {grant.expiresAt ? new Date(grant.expiresAt).toLocaleDateString() : "Never"}
-                  </td>
-                  <td className="px-6 py-3 text-right">
+                <TableRow key={grant.id}>
+                  <TableCell>
+                    <span className="font-mono text-xs">{grant.appId}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-mono text-xs">{grant.credentialType}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Badge tone={STATUS_TONE[grant.status]}>{grant.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-muted">
+                      {grant.expiresAt ? new Date(grant.expiresAt).toLocaleDateString() : "Never"}
+                    </span>
+                  </TableCell>
+                  <TableCell align="right">
                     {grant.status === "ACTIVE" && (
-                      <button onClick={() => handleRevoke(grant.id)} className="text-xs text-red-700 underline underline-offset-2 hover:no-underline">
+                      <Button variant="ghost" className="!p-0 text-xs underline underline-offset-2 hover:no-underline" onClick={() => handleRevoke(grant.id)}>
                         Revoke
-                      </button>
+                      </Button>
                     )}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         )}
-      </div>
+      </Panel>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { AuthLayout } from "@/components/auth-layout";
 import { TextField } from "@/components/text-field";
 import { useAuth } from "@/context/auth-context";
 import { ApiError } from "@/services/api";
+import { Alert, Button } from "@/components/ui";
 
 function LoginForm() {
   const router = useRouter();
@@ -64,19 +65,11 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {error && (
-          <p role="alert" className="border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
-          </p>
-        )}
+        {error && <Alert>{error}</Alert>}
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="mt-2 border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-opacity disabled:opacity-60"
-        >
+        <Button type="submit" disabled={submitting} className="mt-2">
           {submitting ? "Signing in…" : "Sign in"}
-        </button>
+        </Button>
       </form>
     </AuthLayout>
   );

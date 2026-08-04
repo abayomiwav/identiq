@@ -5,6 +5,7 @@ import { apiFetch, ApiError } from "@/services/api";
 import { connectWallet, signWithWallet, WalletError } from "@/services/wallet";
 import { useIdentity } from "@/hooks/use-identity";
 import type { CreateIdentityResponse } from "@/types/identity";
+import { Alert, Button, Panel, Spinner, StatCard } from "@/components/ui";
 
 export default function DashboardOverviewPage() {
   const { identity, reputation, loading, error, refresh } = useIdentity();
@@ -44,11 +45,11 @@ export default function DashboardOverviewPage() {
   }
 
   if (loading) {
-    return <p className="eyebrow !text-muted">Loading your identity…</p>;
+    return <Spinner label="Loading your identity…" />;
   }
 
   if (error) {
-    return <p className="border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
+    return <Alert>{error}</Alert>;
   }
 
   return (
@@ -60,7 +61,7 @@ export default function DashboardOverviewPage() {
       </div>
 
       {!identity || !identity.chainIdentityId ? (
-        <div className="corner-ticks panel relative p-6">
+        <Panel cornerTicks className="p-6">
           <h2 className="text-lg font-medium">Anchor your identity on-chain</h2>
           <p className="mt-2 max-w-lg text-sm text-muted">
             Connect a Stellar wallet and register your identity once. Identiq never takes custody of your keys —
@@ -69,28 +70,26 @@ export default function DashboardOverviewPage() {
 
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             {!wallet ? (
-              <button onClick={handleConnect} className="border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background">
-                Connect wallet
-              </button>
+              <Button onClick={handleConnect}>Connect wallet</Button>
             ) : (
-              <button
-                onClick={handleRegister}
-                disabled={busy}
-                className="border border-border-strong bg-foreground px-4 py-2.5 text-sm font-medium text-background disabled:opacity-60"
-              >
+              <Button onClick={handleRegister} disabled={busy}>
                 {busy ? "Registering…" : `Register identity for ${wallet.slice(0, 6)}…${wallet.slice(-4)}`}
-              </button>
+              </Button>
             )}
           </div>
 
-          {actionError && <p className="mt-4 text-sm text-red-700">{actionError}</p>}
-        </div>
+          {actionError && (
+            <div className="mt-4">
+              <Alert>{actionError}</Alert>
+            </div>
+          )}
+        </Panel>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard label="Wallet reputation" value={reputation ? `${reputation.score}/100` : "—"} />
           <StatCard label="Active credentials" value={String(reputation?.factors.activeCredentialCount ?? 0)} />
           <StatCard label="Active permission grants" value={String(reputation?.factors.activePermissionGrantCount ?? 0)} />
-          <div className="panel p-6 sm:col-span-2 lg:col-span-3">
+          <Panel className="p-6 sm:col-span-2 lg:col-span-3">
             <h2 className="eyebrow">Identity</h2>
             <dl className="mt-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
               <div>
@@ -102,18 +101,9 @@ export default function DashboardOverviewPage() {
                 <dd className="mt-1 font-mono text-xs text-foreground">{identity.chainIdentityId}</dd>
               </div>
             </dl>
-          </div>
+          </Panel>
         </div>
       )}
-    </div>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="panel p-6">
-      <p className="eyebrow">{label}</p>
-      <p className="mt-2 text-2xl font-semibold accent-text">{value}</p>
     </div>
   );
 }
