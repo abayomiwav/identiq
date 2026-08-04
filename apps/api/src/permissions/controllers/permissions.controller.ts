@@ -8,14 +8,17 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import type { AuthenticatedApp } from '../common/guards/api-key.guard';
-import { CurrentUser } from '../common/decorators/current-user.decorator';
-import type { AuthenticatedUser } from '../common/decorators/current-user.decorator';
-import { CurrentApp } from '../common/decorators/current-app.decorator';
-import { ApiKeyGuard } from '../common/guards/api-key.guard';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
-import { CheckAccessDto, GrantPermissionDto } from './dto/grant-permission.dto';
-import { PermissionsService } from './permissions.service';
+import type { AuthenticatedApp } from '../../common/guards/api-key.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import type { AuthenticatedUser } from '../../common/decorators/current-user.decorator';
+import { CurrentApp } from '../../common/decorators/current-app.decorator';
+import { ApiKeyGuard } from '../../common/guards/api-key.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import {
+  CheckAccessDto,
+  GrantPermissionDto,
+} from '../dto/grant-permission.dto';
+import { PermissionsService } from '../services/permissions.service';
 
 @ApiTags('permissions')
 @Controller('permissions')

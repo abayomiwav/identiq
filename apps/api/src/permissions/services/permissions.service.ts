@@ -7,15 +7,18 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { WebhookEventType } from '@identiq/shared';
 import { PermissionGrant } from '@prisma/client';
-import { EmailService } from '../email/email.service';
+import { EmailService } from '../../email/services/email.service';
 import {
   renderPermissionGrantedEmail,
   renderPermissionRevokedEmail,
-} from '../email/email-templates';
-import { IdentityService } from '../identity/identity.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { WebhooksService } from '../webhooks/webhooks.service';
-import { CheckAccessDto, GrantPermissionDto } from './dto/grant-permission.dto';
+} from '../../email/templates/email-templates';
+import { IdentityService } from '../../identity/services/identity.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { WebhooksService } from '../../webhooks/services/webhooks.service';
+import {
+  CheckAccessDto,
+  GrantPermissionDto,
+} from '../dto/grant-permission.dto';
 
 const DEFAULT_GRANT_TTL_DAYS = 30;
 
