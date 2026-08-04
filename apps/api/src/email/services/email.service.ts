@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createTransport, Transporter } from 'nodemailer';
-import { RenderedEmail } from './email-templates';
+import { RenderedEmail } from '../templates/email-templates';
 
 @Injectable()
 export class EmailService implements OnModuleInit {
