@@ -39,19 +39,19 @@ jobs:
 
       - name: Apply database migrations
         run: npx prisma migrate deploy
-        working-directory: apps/api
+        working-directory: backend
 
       - run: npx turbo run lint typecheck test build
 
       - name: API e2e tests
         run: npm run test:e2e
-        working-directory: apps/api
+        working-directory: backend
 
   contract:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: contracts
+        working-directory: blockchain
     steps:
       - uses: actions/checkout@v4
 
@@ -61,7 +61,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          workspaces: contracts
+          workspaces: blockchain
 
       - run: cargo test --workspace
       - run: cargo build --workspace --target wasm32v1-none --release

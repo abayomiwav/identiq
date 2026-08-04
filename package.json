@@ -4,8 +4,11 @@
   "private": true,
   "description": "Identiq — Verify Once. Access Everywhere. Decentralized identity infrastructure on Stellar.",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "frontend",
+    "backend",
+    "shared",
+    "sdk",
+    "cli"
   ],
   "scripts": {
     "build": "turbo run build",

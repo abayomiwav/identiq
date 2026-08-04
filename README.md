@@ -29,10 +29,10 @@ Two boundaries, drawn deliberately:
    can authorize — the API builds an *unsigned* transaction, the user's own
    wallet (e.g. [Freighter](https://www.freighter.app/)) signs it, and only
    the signed transaction comes back for submission. See
-   `apps/api/src/stellar/stellar.service.ts`.
+   `backend/src/stellar/services/stellar.service.ts`.
 2. **Identiq never stores raw evidence.** Issuing a credential hashes
    whatever was checked (`hashEvidence` in
-   `apps/api/src/common/crypto.util.ts`) and anchors only that hash,
+   `backend/src/common/utils/crypto.util.ts`) and anchors only that hash,
    on-chain and off. A credential can be independently re-verified without
    Identiq — or anyone else — holding the original file.
 
@@ -44,17 +44,17 @@ platform's own keys versus its users'.
 ## Monorepo layout
 
 ```
-contracts/         Soroban identity registry contract (Rust)
-apps/api/           NestJS REST API — auth, identity, credentials,
+blockchain/         Soroban identity registry contract (Rust)
+backend/             NestJS REST API — auth, identity, credentials,
                      permissions, developer apps, webhooks, Stellar
                      integration. Swagger docs at /docs.
-apps/web/            Next.js web app — landing page, auth, dashboard,
+frontend/            Next.js web app — landing page, auth, dashboard,
                      /authorize consent screen, developer portal.
-packages/shared/    Domain types shared by every workspace
+shared/              Domain types shared by every workspace
                      (Credential, PermissionGrant, IdentiqApp, ...).
-packages/sdk/        @identiq/sdk — server-side TypeScript SDK for apps
+sdk/                 @identiq/sdk — server-side TypeScript SDK for apps
                      integrating with Identiq.
-packages/cli/        @identiq/cli — developer CLI (login, manage apps
+cli/                 @identiq/cli — developer CLI (login, manage apps
                      and API keys).
 ```
 
@@ -68,14 +68,14 @@ npm install
 # Postgres for the API
 docker compose up -d
 
-cd apps/api
+cd backend
 cp .env.example .env
 # fill in JWT_SECRET at minimum: openssl rand -hex 32
 npx prisma migrate deploy
 npm run start:dev --workspace @identiq/api
 
 # in another shell
-cd apps/web
+cd frontend
 cp .env.example .env.local
 npm run dev --workspace @identiq/web
 ```
@@ -87,8 +87,8 @@ To register an identity on-chain from the dashboard, install
 fund a testnet account via
 [the Laboratory](https://laboratory.stellar.org/#account-creator?network=test).
 The identity contract itself must be deployed and `IDENTITY_CONTRACT_ID` /
-`PLATFORM_SIGNER_SECRET` set in `apps/api/.env` before credential issuance
-or on-chain anchoring will work — see `contracts/README.md`.
+`PLATFORM_SIGNER_SECRET` set in `backend/.env` before credential issuance
+or on-chain anchoring will work — see `blockchain/README.md`.
 
 ## Development
 
@@ -107,32 +107,32 @@ The web app runs with `next dev --webpack` / `next build --webpack` rather
 than Turbopack — this machine's Next.js install is missing the native
 Turbopack binary; webpack is a fully supported fallback.
 
-### Contract
+### Smart contract
 
 ```bash
-cd contracts
+cd blockchain
 cargo test --workspace
 stellar contract build
 ```
 
-See `contracts/README.md` for deployment instructions.
+See `blockchain/README.md` for deployment instructions.
 
 ## Architecture
 
 | Layer | What it owns |
 |---|---|
-| `contracts/identity` | On-chain source of truth: identity registration, credential issuance/revocation (by hash), permission grant/revoke — all owner- or issuer-authorized via `require_auth()`. |
-| `apps/api` | Off-chain source of truth for fast reads and access control: Postgres via Prisma, JWT auth for identity owners, API-key auth for third-party apps, webhook dispatch, email notifications. Mirrors on-chain state via `chainIdentityId` / `chainCredentialId` / `chainPermissionId`. |
-| `packages/sdk` | What a third-party app actually imports: `checkAccess()`, an `/authorize` URL builder, and webhook signature verification. |
-| `packages/cli` | The same operations apps/api exposes, from a terminal. |
-| `apps/web` | Where a human does all of the above: create an identity, issue/revoke credentials, review permission grants, register a developer app, approve a consent request. |
+| `blockchain/contracts/identity` | On-chain source of truth: identity registration, credential issuance/revocation (by hash), permission grant/revoke — all owner- or issuer-authorized via `require_auth()`. |
+| `backend` | Off-chain source of truth for fast reads and access control: Postgres via Prisma, JWT auth for identity owners, API-key auth for third-party apps, webhook dispatch, email notifications. Mirrors on-chain state via `chainIdentityId` / `chainCredentialId` / `chainPermissionId`. |
+| `sdk` | What a third-party app actually imports: `checkAccess()`, an `/authorize` URL builder, and webhook signature verification. |
+| `cli` | The same operations `backend` exposes, from a terminal. |
+| `frontend` | Where a human does all of the above: create an identity, issue/revoke credentials, review permission grants, register a developer app, approve a consent request. |
 
 ## Wallet reputation
 
 A transparent, deterministically-computed 0–100 trust signal — not a
 black-box score. Every input (account age, active credentials, active
 grants, revocations) is independently checkable through the API. Formula
-and tests: `packages/shared/src/reputation.ts`.
+and tests: `shared/src/utils/reputation.ts`.
 
 ## Roadmap
 
