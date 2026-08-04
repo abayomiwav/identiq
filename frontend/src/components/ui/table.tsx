@@ -1,5 +1,9 @@
 export function Table({ children }: { children: React.ReactNode }) {
-  return <table className="w-full text-left text-sm">{children}</table>;
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-[640px] text-left text-sm">{children}</table>
+    </div>
+  );
 }
 
 export function TableHead({ children }: { children: React.ReactNode }) {

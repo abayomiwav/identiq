@@ -95,16 +95,18 @@ export default function DashboardOverviewPage() {
           <Panel className="p-6 sm:col-span-2 lg:col-span-3">
             <h2 className="eyebrow">Identity</h2>
             <dl className="mt-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-              <div>
+              <div className="min-w-0">
                 <dt className="text-muted">Stellar address</dt>
                 <dd className="mt-1 flex items-center gap-2">
-                  <span className="font-mono text-xs text-foreground">{identity.stellarPublicKey}</span>
-                  {identity.stellarPublicKey && <CopyButton value={identity.stellarPublicKey} label="" />}
+                  <span className="break-all font-mono text-xs text-foreground">{identity.stellarPublicKey}</span>
+                  {identity.stellarPublicKey && (
+                    <CopyButton value={identity.stellarPublicKey} label="" className="shrink-0" />
+                  )}
                 </dd>
               </div>
-              <div>
+              <div className="min-w-0">
                 <dt className="text-muted">On-chain identity id</dt>
-                <dd className="mt-1 font-mono text-xs text-foreground">{identity.chainIdentityId}</dd>
+                <dd className="mt-1 break-all font-mono text-xs text-foreground">{identity.chainIdentityId}</dd>
               </div>
             </dl>
           </Panel>

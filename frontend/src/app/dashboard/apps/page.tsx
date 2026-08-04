@@ -159,13 +159,13 @@ export default function DeveloperAppsPage() {
                 </div>
               </div>
               <dl className="mt-4 grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
-                <div>
+                <div className="min-w-0">
                   <dt className="text-muted">Redirect URIs</dt>
-                  <dd className="mt-1 font-mono text-foreground">{app.redirectUris.join(", ")}</dd>
+                  <dd className="mt-1 break-all font-mono text-foreground">{app.redirectUris.join(", ")}</dd>
                 </div>
-                <div>
+                <div className="min-w-0">
                   <dt className="text-muted">Webhook URL</dt>
-                  <dd className="mt-1 font-mono text-foreground">{app.webhookUrl ?? "Not configured"}</dd>
+                  <dd className="mt-1 break-all font-mono text-foreground">{app.webhookUrl ?? "Not configured"}</dd>
                 </div>
               </dl>
             </Panel>
