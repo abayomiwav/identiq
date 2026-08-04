@@ -1,4 +1,4 @@
-# Identiq
+# Identiq - Stellar Identity Network
 
 **Verify Once. Access Everywhere.**
 
