@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { PrismaService } from '../../prisma/prisma.service';
-import { hashApiKey } from '../crypto.util';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { hashApiKey } from '../utils/crypto.util';
 
 export const API_KEY_HEADER = 'x-identiq-api-key';
 
