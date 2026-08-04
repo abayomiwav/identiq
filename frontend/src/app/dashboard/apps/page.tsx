@@ -72,9 +72,10 @@ export default function DeveloperAppsPage() {
     <div className="flex flex-col gap-6">
       <div>
         <p className="eyebrow">Dashboard</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Developer apps</h1>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight">My apps</h1>
         <p className="mt-1 text-sm text-muted">
-          Register an app to receive an API key, a webhook secret, and access to the consent flow.
+          Register a website or app you run to receive an API key, a webhook secret, and access to the consent
+          flow. This is for anyone integrating Identiq — no engineering team required.
         </p>
       </div>
 

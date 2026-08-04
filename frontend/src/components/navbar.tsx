@@ -9,7 +9,7 @@ import { useAuth } from "@/context/auth-context";
 
 const NAV_LINKS = [
   { href: "/#how-it-works", label: "How it works" },
-  { href: "/#developers", label: "Developers" },
+  { href: "/#features", label: "Why Identiq" },
   { href: "/#pricing", label: "Pricing" },
 ];
 

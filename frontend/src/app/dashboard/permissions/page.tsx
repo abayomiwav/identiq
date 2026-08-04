@@ -55,7 +55,7 @@ export default function PermissionsPage() {
     <div className="flex flex-col gap-6">
       <div>
         <p className="eyebrow">Dashboard</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Permissions</h1>
+        <h1 className="mt-1 text-2xl font-semibold tracking-tight">Connected apps</h1>
         <p className="mt-1 text-sm text-muted">
           Apps you&apos;ve granted access to. Revoke any of these at any time — access stops immediately.
         </p>

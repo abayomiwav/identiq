@@ -32,7 +32,7 @@ const FEATURES = [
 
 export function Features() {
   return (
-    <section className="border-t border-border-strong">
+    <section id="features" className="border-t border-border-strong">
       <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
         <div className="max-w-xl">
           <p className="eyebrow">What it does</p>

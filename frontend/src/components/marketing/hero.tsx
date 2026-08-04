@@ -13,7 +13,7 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="max-w-2xl"
         >
-          <p className="eyebrow">Identity-as-a-Service &middot; Stellar / Soroban</p>
+          <p className="eyebrow">Own your identity</p>
 
           <h1 className="mt-5 text-5xl font-semibold leading-[1.05] tracking-tight sm:text-7xl">
             Verify once.
@@ -34,10 +34,10 @@ export function Hero() {
               Create your identity &rarr;
             </Link>
             <a
-              href="#developers"
+              href="#how-it-works"
               className="border border-border-strong px-6 py-3 text-center text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
             >
-              Read the docs
+              See how it works
             </a>
           </div>
 
@@ -51,9 +51,9 @@ export function Hero() {
           className="corner-ticks panel relative mt-16 grid grid-cols-1 divide-y divide-border sm:grid-cols-3 sm:divide-x sm:divide-y-0"
         >
           {[
-            { n: "01", label: "Identity", value: "1 wallet, verified once" },
-            { n: "02", label: "Credentials", value: "KYC · Email · Business" },
-            { n: "03", label: "Permission grants", value: "Per-app, revocable anytime" },
+            { n: "01", label: "Your identity", value: "Verified once, yours to reuse" },
+            { n: "02", label: "Your proof", value: "ID, email, business — each with an expiry" },
+            { n: "03", label: "Your control", value: "Share only what's needed, revoke anytime" },
           ].map((row) => (
             <div key={row.label} className="p-6 sm:p-8">
               <p className="eyebrow">{row.n} &middot; {row.label}</p>

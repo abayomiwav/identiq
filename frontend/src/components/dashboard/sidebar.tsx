@@ -8,8 +8,8 @@ import { useAuth } from "@/context/auth-context";
 const LINKS = [
   { href: "/dashboard", label: "Overview" },
   { href: "/dashboard/credentials", label: "Credentials" },
-  { href: "/dashboard/permissions", label: "Permissions" },
-  { href: "/dashboard/apps", label: "Developer apps" },
+  { href: "/dashboard/permissions", label: "Connected apps" },
+  { href: "/dashboard/apps", label: "My apps" },
 ];
 
 export function Sidebar() {
