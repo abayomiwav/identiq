@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 import { validate } from './config/env.validation';
 import { CredentialsModule } from './credentials/credentials.module';
-import { HealthController } from './health/health.controller';
+import { HealthController } from './health/controllers/health.controller';
 import { IdentityModule } from './identity/identity.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { PrismaModule } from './prisma/prisma.module';
