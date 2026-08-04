@@ -6,11 +6,11 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { CredentialType, WebhookEventType } from '@identiq/shared';
-import { EmailService } from '../email/email.service';
-import { IdentityService } from '../identity/identity.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { StellarService } from '../stellar/stellar.service';
-import { WebhooksService } from '../webhooks/webhooks.service';
+import { EmailService } from '../../email/services/email.service';
+import { IdentityService } from '../../identity/services/identity.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { StellarService } from '../../stellar/services/stellar.service';
+import { WebhooksService } from '../../webhooks/services/webhooks.service';
 import { CredentialsService } from './credentials.service';
 
 describe('CredentialsService', () => {

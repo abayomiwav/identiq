@@ -11,17 +11,17 @@ import {
   WebhookEventType,
 } from '@identiq/shared';
 import { Credential } from '@prisma/client';
-import { hashEvidence } from '../common/crypto.util';
-import { EmailService } from '../email/email.service';
+import { hashEvidence } from '../../common/utils/crypto.util';
+import { EmailService } from '../../email/services/email.service';
 import {
   renderCredentialIssuedEmail,
   renderCredentialRevokedEmail,
-} from '../email/email-templates';
-import { IdentityService } from '../identity/identity.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { StellarService } from '../stellar/stellar.service';
-import { WebhooksService } from '../webhooks/webhooks.service';
-import { IssueCredentialDto } from './dto/issue-credential.dto';
+} from '../../email/templates/email-templates';
+import { IdentityService } from '../../identity/services/identity.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { StellarService } from '../../stellar/services/stellar.service';
+import { WebhooksService } from '../../webhooks/services/webhooks.service';
+import { IssueCredentialDto } from '../dto/issue-credential.dto';
 
 const SECONDS_PER_DAY = 24 * 60 * 60;
 /** Contract requires a non-zero ttl; credentials with no natural expiry get a long-lived anchor instead. */
