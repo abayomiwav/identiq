@@ -1,7 +1,7 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { PrismaService } from '../prisma/prisma.service';
-import { StellarService } from '../stellar/stellar.service';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { StellarService } from '../../stellar/services/stellar.service';
 import { IdentityService } from './identity.service';
 
 describe('IdentityService', () => {

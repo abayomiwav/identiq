@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { computeReputationScore, WalletReputation } from '@identiq/shared';
 import { Identity } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
-import { StellarService } from '../stellar/stellar.service';
-import { ConfirmRegistrationDto } from './dto/confirm-registration.dto';
-import { CreateIdentityDto } from './dto/create-identity.dto';
+import { PrismaService } from '../../prisma/services/prisma.service';
+import { StellarService } from '../../stellar/services/stellar.service';
+import { ConfirmRegistrationDto } from '../dto/confirm-registration.dto';
+import { CreateIdentityDto } from '../dto/create-identity.dto';
 
 export interface IdentityWithUnsignedXdr {
   identity: Identity;
