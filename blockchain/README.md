@@ -1,4 +1,4 @@
-# contracts/identity
+# blockchain/identity
 
 The Identiq identity registry — a Soroban contract anchoring three things
 on-chain, by hash only:
@@ -34,16 +34,16 @@ stellar contract deploy \
   --network testnet
 ```
 
-Copy the resulting contract id into `apps/api/.env` as
+Copy the resulting contract id into `backend/.env` as
 `IDENTITY_CONTRACT_ID`, and the `platform` key's secret as
-`PLATFORM_SIGNER_SECRET` — this is the key `apps/api` uses to sign
+`PLATFORM_SIGNER_SECRET` — this is the key `backend` uses to sign
 credentials it issues as an attester. It is a platform operational key,
 never a user's.
 
 ## Project structure
 
 ```
-contracts/
+blockchain/
 ├── Cargo.toml              workspace root
 └── contracts/identity/
     ├── Cargo.toml
