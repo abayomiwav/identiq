@@ -41,10 +41,10 @@ The platform does hold its own operational Stellar signer
 issues as an attester — the same non-custodial boundary drawn around a
 platform's own keys versus its users'.
 
-## Monorepo layout
+## Layout
 
 ```
-blockchain/         Soroban identity registry contract (Rust)
+contracts/         Soroban identity registry contract (Rust)
 backend/             NestJS REST API — auth, identity, credentials,
                      permissions, developer apps, webhooks, Stellar
                      integration. Swagger docs at /docs.
