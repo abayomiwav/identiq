@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: identiq
+          POSTGRES_PASSWORD: identiq
+          POSTGRES_DB: identiq
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U identiq"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://identiq:identiq@localhost:5432/identiq
+      JWT_SECRET: ci-only-secret-not-used-in-production-00000000
+      STELLAR_NETWORK: testnet
+      STELLAR_RPC_URL: https://soroban-testnet.stellar.org
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Apply database migrations
+        run: npx prisma migrate deploy
+        working-directory: apps/api
+
+      - run: npx turbo run lint typecheck test build
+
+      - name: API e2e tests
+        run: npm run test:e2e
+        working-directory: apps/api
+
+  contract:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32v1-none
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: contracts
+
+      - run: cargo test --workspace
+      - run: cargo build --workspace --target wasm32v1-none --release
