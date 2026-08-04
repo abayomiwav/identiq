@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum CredentialType {
+  EMAIL_VERIFIED
+  PHONE_VERIFIED
+  GOVERNMENT_ID
+  PROOF_OF_ADDRESS
+  KYC_TIER1
+  KYC_TIER2
+  BUSINESS_VERIFIED
+}
+
+enum CredentialStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+}
+
+enum PermissionStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  identity Identity?
+  apps     IdentiqApp[]
+
+  @@map("users")
+}
+
+model Identity {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stellarPublicKey String?  @unique
+  chainIdentityId  String?  @unique
+  createdAt        DateTime @default(now())
+
+  credentials      Credential[]
+  permissionGrants PermissionGrant[]
+
+  @@map("identities")
+}
+
+model IdentiqApp {
+  id            String   @id @default(uuid())
+  ownerId       String
+  owner         User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name          String
+  redirectUris  String[]
+  apiKeyPrefix  String
+  apiKeyHash    String
+  webhookUrl    String?
+  webhookSecret String
+  createdAt     DateTime @default(now())
+
+  issuedCredentials Credential[]
+  permissionGrants  PermissionGrant[]
+
+  @@map("identiq_apps")
+}
+
+model Credential {
+  id                String            @id @default(uuid())
+  identityId        String
+  identity          Identity          @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  type              CredentialType
+  status            CredentialStatus  @default(ACTIVE)
+  /// SHA-256 hex digest of the evidence the issuer checked — never the evidence itself.
+  evidenceHash      String
+  issuerAppId       String?
+  issuerApp         IdentiqApp?       @relation(fields: [issuerAppId], references: [id], onDelete: SetNull)
+  issuedAt          DateTime          @default(now())
+  expiresAt         DateTime?
+  revokedAt         DateTime?
+  chainCredentialId String?
+
+  @@index([identityId])
+  @@map("credentials")
+}
+
+model PermissionGrant {
+  id                String            @id @default(uuid())
+  identityId        String
+  identity          Identity          @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  appId             String
+  app               IdentiqApp        @relation(fields: [appId], references: [id], onDelete: Cascade)
+  credentialType    CredentialType
+  status            PermissionStatus  @default(ACTIVE)
+  grantedAt         DateTime          @default(now())
+  expiresAt         DateTime?
+  revokedAt         DateTime?
+  chainPermissionId String?
+
+  @@unique([identityId, appId, credentialType])
+  @@index([appId])
+  @@map("permission_grants")
+}
