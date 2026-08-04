@@ -1,7 +1,7 @@
 import { CredentialType } from '@identiq/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { IdentiqClient } from './client';
-import { IdentiqApiError } from './errors';
+import { IdentiqApiError } from '../errors/errors';
 
 describe('IdentiqClient', () => {
   const fetchMock = vi.fn();

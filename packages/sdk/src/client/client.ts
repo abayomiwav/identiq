@@ -1,5 +1,5 @@
 import { CredentialType } from '@identiq/shared';
-import { IdentiqApiError } from './errors';
+import { IdentiqApiError } from '../errors/errors';
 
 export interface IdentiqClientOptions {
   /** Your app's Identiq API key (starts with `idq_`). Keep this server-side — never ship it to a browser. */
