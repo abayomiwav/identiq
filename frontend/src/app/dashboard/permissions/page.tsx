@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { apiFetch, ApiError } from "@/services/api";
 import type { Grant } from "@/types/permission";
 import {
   Alert,
   Badge,
   Button,
+  ConfirmDialog,
   EmptyState,
   Panel,
   Spinner,
@@ -28,6 +30,7 @@ const STATUS_TONE = {
 export default function PermissionsPage() {
   const [grants, setGrants] = useState<Grant[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pendingRevoke, setPendingRevoke] = useState<Grant | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -41,13 +44,16 @@ export default function PermissionsPage() {
     void refresh();
   }, [refresh]);
 
-  async function handleRevoke(id: string) {
-    setError(null);
+  async function handleRevoke() {
+    if (!pendingRevoke) return;
+    const grant = pendingRevoke;
+    setPendingRevoke(null);
     try {
-      await apiFetch(`/permissions/${id}`, { method: "DELETE" });
+      await apiFetch(`/permissions/${grant.id}`, { method: "DELETE" });
       await refresh();
+      toast.success("Access revoked");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not revoke this grant.");
+      toast.error(err instanceof ApiError ? err.message : "Could not revoke this grant.");
     }
   }
 
@@ -104,7 +110,11 @@ export default function PermissionsPage() {
                   </TableCell>
                   <TableCell align="right">
                     {grant.status === "ACTIVE" && (
-                      <Button variant="ghost" className="!p-0 text-xs underline underline-offset-2 hover:no-underline" onClick={() => handleRevoke(grant.id)}>
+                      <Button
+                        variant="ghost"
+                        className="text-xs underline underline-offset-2 hover:no-underline"
+                        onClick={() => setPendingRevoke(grant)}
+                      >
                         Revoke
                       </Button>
                     )}
@@ -115,6 +125,16 @@ export default function PermissionsPage() {
           </Table>
         )}
       </Panel>
+
+      <ConfirmDialog
+        open={pendingRevoke !== null}
+        title="Revoke this app's access?"
+        description="It will immediately lose the ability to check this credential type for your identity. This can't be undone."
+        confirmLabel="Revoke access"
+        tone="danger"
+        onConfirm={handleRevoke}
+        onCancel={() => setPendingRevoke(null)}
+      />
     </div>
   );
 }

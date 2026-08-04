@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Toaster } from "sonner";
 import { AuthProvider } from "@/context/auth-context";
 import "./globals.css";
 
@@ -53,6 +54,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <AuthProvider>{children}</AuthProvider>
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            unstyled: true,
+            classNames: {
+              toast:
+                "flex items-start gap-3 w-full border border-border-strong bg-card p-4 text-sm text-foreground shadow-none",
+              title: "font-medium",
+              description: "text-muted",
+              actionButton: "border border-border-strong bg-foreground text-background px-2.5 py-1 text-xs",
+              cancelButton: "border border-border-strong px-2.5 py-1 text-xs",
+            },
+          }}
+        />
       </body>
     </html>
   );

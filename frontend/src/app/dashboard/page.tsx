@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { apiFetch, ApiError } from "@/services/api";
 import { connectWallet, signWithWallet, WalletError } from "@/services/wallet";
 import { useIdentity } from "@/hooks/use-identity";
 import type { CreateIdentityResponse } from "@/types/identity";
-import { Alert, Button, Panel, Spinner, StatCard } from "@/components/ui";
+import { Alert, Button, CopyButton, Panel, Spinner, StatCard } from "@/components/ui";
 
 export default function DashboardOverviewPage() {
   const { identity, reputation, loading, error, refresh } = useIdentity();
@@ -18,6 +19,7 @@ export default function DashboardOverviewPage() {
     try {
       const address = await connectWallet();
       setWallet(address);
+      toast.success("Wallet connected");
     } catch (err) {
       setActionError(err instanceof WalletError ? err.message : "Could not connect wallet.");
     }
@@ -35,6 +37,7 @@ export default function DashboardOverviewPage() {
       const signedXdr = await signWithWallet(unsignedXdr, wallet);
       await apiFetch("/identity/confirm", { method: "POST", body: { signedXdr } });
       await refresh();
+      toast.success("Identity registered on-chain");
     } catch (err) {
       setActionError(
         err instanceof ApiError || err instanceof WalletError ? err.message : "Could not register your identity.",
@@ -94,7 +97,10 @@ export default function DashboardOverviewPage() {
             <dl className="mt-3 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
               <div>
                 <dt className="text-muted">Stellar address</dt>
-                <dd className="mt-1 font-mono text-xs text-foreground">{identity.stellarPublicKey}</dd>
+                <dd className="mt-1 flex items-center gap-2">
+                  <span className="font-mono text-xs text-foreground">{identity.stellarPublicKey}</span>
+                  {identity.stellarPublicKey && <CopyButton value={identity.stellarPublicKey} label="" />}
+                </dd>
               </div>
               <div>
                 <dt className="text-muted">On-chain identity id</dt>

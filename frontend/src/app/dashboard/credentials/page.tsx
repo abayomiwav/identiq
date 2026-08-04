@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { CredentialType } from "@identiq/shared";
 import { apiFetch, ApiError } from "@/services/api";
 import type { Credential } from "@/types/credential";
@@ -8,6 +9,7 @@ import {
   Alert,
   Badge,
   Button,
+  ConfirmDialog,
   EmptyState,
   Panel,
   Select,
@@ -35,6 +37,7 @@ export default function CredentialsPage() {
   const [evidence, setEvidence] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [pendingRevoke, setPendingRevoke] = useState<Credential | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -57,6 +60,7 @@ export default function CredentialsPage() {
       await apiFetch("/credentials", { method: "POST", body: { type, evidence } });
       setEvidence("");
       await refresh();
+      toast.success(`${type} credential issued`);
     } catch (err) {
       setError(
         err instanceof ApiError
@@ -68,13 +72,16 @@ export default function CredentialsPage() {
     }
   }
 
-  async function handleRevoke(id: string) {
-    setError(null);
+  async function handleRevoke() {
+    if (!pendingRevoke) return;
+    const credential = pendingRevoke;
+    setPendingRevoke(null);
     try {
-      await apiFetch(`/credentials/${id}`, { method: "DELETE" });
+      await apiFetch(`/credentials/${credential.id}`, { method: "DELETE" });
       await refresh();
+      toast.success(`${credential.type} credential revoked`);
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Could not revoke credential.");
+      toast.error(err instanceof ApiError ? err.message : "Could not revoke credential.");
     }
   }
 
@@ -151,7 +158,11 @@ export default function CredentialsPage() {
                   </TableCell>
                   <TableCell align="right">
                     {credential.status === "ACTIVE" && (
-                      <Button variant="ghost" className="!p-0 text-xs underline underline-offset-2 hover:no-underline" onClick={() => handleRevoke(credential.id)}>
+                      <Button
+                        variant="ghost"
+                        className="text-xs underline underline-offset-2 hover:no-underline"
+                        onClick={() => setPendingRevoke(credential)}
+                      >
                         Revoke
                       </Button>
                     )}
@@ -162,6 +173,16 @@ export default function CredentialsPage() {
           </Table>
         )}
       </Panel>
+
+      <ConfirmDialog
+        open={pendingRevoke !== null}
+        title={`Revoke ${pendingRevoke?.type ?? "this credential"}?`}
+        description="Any app checking this credential will immediately see it as invalid. This can't be undone."
+        confirmLabel="Revoke credential"
+        tone="danger"
+        onConfirm={handleRevoke}
+        onCancel={() => setPendingRevoke(null)}
+      />
     </div>
   );
 }

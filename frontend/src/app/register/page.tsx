@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { AuthLayout } from "@/components/auth-layout";
 import { TextField } from "@/components/text-field";
 import { useAuth } from "@/context/auth-context";
@@ -29,6 +30,7 @@ export default function RegisterPage() {
     setSubmitting(true);
     try {
       await register(email, password);
+      toast.success("Account created");
       router.push("/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");

@@ -8,3 +8,5 @@ export { StatCard } from "./stat-card";
 export { Select } from "./select";
 export { Table, TableHead, TableHeadRow, TableHeadCell, TableBody, TableRow, TableCell } from "./table";
 export { Disclosure } from "./disclosure";
+export { ConfirmDialog } from "./confirm-dialog";
+export { CopyButton } from "./copy-button";

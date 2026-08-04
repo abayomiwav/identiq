@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, X } from "lucide-react";
 import { LogoMark } from "./logo-mark";
 import { useAuth } from "@/context/auth-context";
 
@@ -17,15 +18,41 @@ export function Navbar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
     if (menuOpen) setMenuOpen(false);
+    if (userMenuOpen) setUserMenuOpen(false);
   }
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    function onClick(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [userMenuOpen]);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border-strong bg-background">
+    <header
+      className={`sticky top-0 z-50 w-full border-b bg-background transition-shadow ${
+        scrolled ? "border-border-strong shadow-[0_1px_0_0_rgba(0,0,0,0.04)]" : "border-border"
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5 font-semibold tracking-tight">
           <LogoMark size={26} />
@@ -46,20 +73,50 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           {user ? (
-            <>
-              <Link href="/dashboard" className="px-3 py-2 text-sm text-muted transition-colors hover:text-foreground">
-                Dashboard
-              </Link>
+            <div ref={userMenuRef} className="relative">
               <button
-                onClick={logout}
-                className="border border-border-strong px-4 py-2 text-sm text-foreground transition-colors hover:bg-foreground hover:text-background"
+                onClick={() => setUserMenuOpen((open) => !open)}
+                aria-expanded={userMenuOpen}
+                className="flex items-center gap-2 border border-border-strong px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-foreground hover:text-background"
               >
-                Sign out
+                <span className="flex h-6 w-6 items-center justify-center bg-accent text-xs font-medium text-accent-foreground">
+                  {user.email.charAt(0).toUpperCase()}
+                </span>
+                <ChevronDown size={14} className={`transition-transform ${userMenuOpen ? "rotate-180" : ""}`} />
               </button>
-            </>
+
+              {userMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="panel absolute right-0 mt-2 w-52 py-1"
+                >
+                  <p className="truncate border-b border-border px-3 py-2 text-xs text-muted">{user.email}</p>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground hover:bg-background"
+                  >
+                    <LayoutDashboard size={15} className="text-muted" />
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-foreground hover:bg-background"
+                  >
+                    <LogOut size={15} className="text-muted" />
+                    Sign out
+                  </button>
+                </motion.div>
+              )}
+            </div>
           ) : (
             <>
-              <Link href="/login" className="px-3 py-2 text-sm text-muted transition-colors hover:text-foreground">
+              <Link
+                href="/login"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-muted transition-colors hover:text-foreground"
+              >
+                <LogIn size={15} />
                 Sign in
               </Link>
               <Link
@@ -78,15 +135,7 @@ export function Navbar() {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <span className="relative block h-4 w-5">
-            <span
-              className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition-transform ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
-            />
-            <span className={`absolute left-0 top-[7px] h-0.5 w-5 bg-current transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
-            <span
-              className={`absolute left-0 top-[14px] h-0.5 w-5 bg-current transition-transform ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
-            />
-          </span>
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
@@ -105,16 +154,20 @@ export function Navbar() {
             <div className="my-2 h-px bg-border-strong" />
             {user ? (
               <>
-                <Link href="/dashboard" className="px-3 py-2 text-sm text-foreground">
+                <p className="truncate px-3 py-1 text-xs text-muted">{user.email}</p>
+                <Link href="/dashboard" className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground">
+                  <LayoutDashboard size={15} className="text-muted" />
                   Dashboard
                 </Link>
-                <button onClick={logout} className="px-3 py-2 text-left text-sm text-foreground">
+                <button onClick={logout} className="flex items-center gap-2.5 px-3 py-2 text-left text-sm text-foreground">
+                  <LogOut size={15} className="text-muted" />
                   Sign out
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" className="px-3 py-2 text-sm text-foreground">
+                <Link href="/login" className="flex items-center gap-2.5 px-3 py-2 text-sm text-foreground">
+                  <LogIn size={15} className="text-muted" />
                   Sign in
                 </Link>
                 <Link href="/register" className="mt-1 bg-accent px-3 py-2 text-center text-sm font-medium text-accent-foreground">

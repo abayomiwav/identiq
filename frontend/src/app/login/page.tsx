@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { toast } from "sonner";
 import { AuthLayout } from "@/components/auth-layout";
 import { TextField } from "@/components/text-field";
 import { useAuth } from "@/context/auth-context";
@@ -24,6 +25,7 @@ function LoginForm() {
     setSubmitting(true);
     try {
       await login(email, password);
+      toast.success("Welcome back");
       router.push(searchParams.get("next") ?? "/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
