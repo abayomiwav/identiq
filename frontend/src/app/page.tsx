@@ -3,7 +3,6 @@ import { Footer } from "@/components/footer";
 import { Hero } from "@/components/marketing/hero";
 import { HowItWorks } from "@/components/marketing/how-it-works";
 import { Features } from "@/components/marketing/features";
-import { DeveloperTeaser } from "@/components/marketing/developer-teaser";
 import { CtaSection } from "@/components/marketing/cta-section";
 
 export default function HomePage() {
@@ -14,7 +13,6 @@ export default function HomePage() {
         <Hero />
         <HowItWorks />
         <Features />
-        <DeveloperTeaser />
         <CtaSection />
       </main>
       <Footer />

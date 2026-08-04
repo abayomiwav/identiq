@@ -26,14 +26,14 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="eyebrow">Developers</h3>
+              <h3 className="eyebrow">Building on Identiq</h3>
               <ul className="mt-3 space-y-2 text-sm text-muted">
+                <li><Link href="/developers" className="hover:text-foreground">Integration guide</Link></li>
                 <li>
                   <a href={`${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000"}/docs`} className="hover:text-foreground">
                     API reference
                   </a>
                 </li>
-                <li><Link href="/dashboard/apps" className="hover:text-foreground">Developer portal</Link></li>
               </ul>
             </div>
             <div>
