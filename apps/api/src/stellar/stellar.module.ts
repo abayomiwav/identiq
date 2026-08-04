@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { StellarService } from './stellar.service';
+import { StellarService } from './services/stellar.service';
 
 @Module({
   providers: [StellarService],
