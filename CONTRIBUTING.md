@@ -6,7 +6,7 @@ Before opening a PR, please read this end to end — it's short.
 ## Monorepo layout
 
 ```
-blockchain/   Soroban identity registry contract (Rust)
+contracts/    Soroban identity registry contract (Rust)
 backend/      NestJS REST API (@identiq/api)
 frontend/     Next.js web app (@identiq/web)
 shared/       Domain types shared by every workspace (@identiq/shared)
@@ -65,7 +65,7 @@ Or scope any command to one workspace: `npm run test --workspace @identiq/api`.
 For the smart contract:
 
 ```bash
-cd blockchain
+cd contracts
 cargo test --workspace
 ```
 

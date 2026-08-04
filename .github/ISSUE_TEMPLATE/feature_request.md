@@ -6,7 +6,7 @@ labels: enhancement
 ---
 
 **Which package?**
-<!-- blockchain / backend / frontend / shared / sdk / cli / cross-cutting -->
+<!-- contracts / backend / frontend / shared / sdk / cli / cross-cutting -->
 
 **What problem does this solve?**
 <!-- What's missing or awkward today? -->

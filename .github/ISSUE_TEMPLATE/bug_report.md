@@ -6,7 +6,7 @@ labels: bug
 ---
 
 **Which package?**
-<!-- blockchain / backend / frontend / shared / sdk / cli -->
+<!-- contracts / backend / frontend / shared / sdk / cli -->
 
 **What happened?**
 <!-- A clear description of the bug. -->

@@ -1,4 +1,4 @@
-# blockchain/identity
+# contracts/identity
 
 The Identiq identity registry — a Soroban contract anchoring three things
 on-chain, by hash only:
@@ -43,9 +43,9 @@ never a user's.
 ## Project structure
 
 ```
-blockchain/
+contracts/
 ├── Cargo.toml              workspace root
-└── contracts/identity/
+└── identity/
     ├── Cargo.toml
     └── src/
         ├── lib.rs           contract implementation

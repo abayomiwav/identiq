@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: blockchain
+        working-directory: contracts
     steps:
       - uses: actions/checkout@v4
 
@@ -61,7 +61,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          workspaces: blockchain
+          workspaces: contracts
 
       - run: cargo test --workspace
       - run: cargo build --workspace --target wasm32v1-none --release

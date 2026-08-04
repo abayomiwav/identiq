@@ -15,7 +15,7 @@ npm run start:dev --workspace @identiq/api
 
 `IDENTITY_CONTRACT_ID` and `PLATFORM_SIGNER_SECRET` are only required for
 endpoints that touch the chain (identity registration, credential
-issuance/revocation) — see `blockchain/README.md` for deploying the
+issuance/revocation) — see `contracts/README.md` for deploying the
 contract those values point at.
 
 ## Tests

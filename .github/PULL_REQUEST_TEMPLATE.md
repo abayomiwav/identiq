@@ -4,7 +4,7 @@
 
 ## Which package(s)?
 
-<!-- blockchain / backend / frontend / shared / sdk / cli -->
+<!-- contracts / backend / frontend / shared / sdk / cli -->
 
 ## Related issue
 

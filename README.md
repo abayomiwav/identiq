@@ -44,7 +44,7 @@ platform's own keys versus its users'.
 ## Layout
 
 ```
-contracts/         Soroban identity registry contract (Rust)
+contracts/           Soroban identity registry contract (Rust)
 backend/             NestJS REST API — auth, identity, credentials,
                      permissions, developer apps, webhooks, Stellar
                      integration. Swagger docs at /docs.
@@ -88,7 +88,7 @@ fund a testnet account via
 [the Laboratory](https://laboratory.stellar.org/#account-creator?network=test).
 The identity contract itself must be deployed and `IDENTITY_CONTRACT_ID` /
 `PLATFORM_SIGNER_SECRET` set in `backend/.env` before credential issuance
-or on-chain anchoring will work — see `blockchain/README.md`.
+or on-chain anchoring will work — see `contracts/README.md`.
 
 ## Development
 
@@ -110,18 +110,18 @@ Turbopack binary; webpack is a fully supported fallback.
 ### Smart contract
 
 ```bash
-cd blockchain
+cd contracts
 cargo test --workspace
 stellar contract build
 ```
 
-See `blockchain/README.md` for deployment instructions.
+See `contracts/README.md` for deployment instructions.
 
 ## Architecture
 
 | Layer | What it owns |
 |---|---|
-| `blockchain/contracts/identity` | On-chain source of truth: identity registration, credential issuance/revocation (by hash), permission grant/revoke — all owner- or issuer-authorized via `require_auth()`. |
+| `contracts/identity` | On-chain source of truth: identity registration, credential issuance/revocation (by hash), permission grant/revoke — all owner- or issuer-authorized via `require_auth()`. |
 | `backend` | Off-chain source of truth for fast reads and access control: Postgres via Prisma, JWT auth for identity owners, API-key auth for third-party apps, webhook dispatch, email notifications. Mirrors on-chain state via `chainIdentityId` / `chainCredentialId` / `chainPermissionId`. |
 | `sdk` | What a third-party app actually imports: `checkAccess()`, an `/authorize` URL builder, and webhook signature verification. |
 | `cli` | The same operations `backend` exposes, from a terminal. |

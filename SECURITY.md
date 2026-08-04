@@ -16,7 +16,7 @@ Instead, use GitHub's private reporting:
 
 This applies to any vulnerability in:
 
-- `blockchain/` — the Soroban identity registry contract
+- `contracts/` — the Soroban identity registry contract
 - `backend/` — the API, including auth, permission checks, and the
   non-custodial transaction flow
 - `sdk/` / `cli/` — webhook signature verification, API key handling
