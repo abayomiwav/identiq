@@ -11,7 +11,7 @@ cp .env.example .env.local
 npm run dev --workspace @identiq/web
 ```
 
-Requires `apps/api` running locally (defaults to `http://localhost:3000`,
+Requires `backend` running locally (defaults to `http://localhost:3000`,
 override with `NEXT_PUBLIC_API_URL`). To register an on-chain identity from
 the dashboard you'll also need the [Freighter](https://www.freighter.app/)
 browser extension pointed at Stellar testnet.
