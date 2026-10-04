@@ -1,3 +1,8 @@
+/**
+ * Authenticates third-party apps by the x-identiq-api-key header, matching on
+ * the key's SHA-256 hash (keys are never stored in plaintext).
+ */
+
 import {
   CanActivate,
   ExecutionContext,
