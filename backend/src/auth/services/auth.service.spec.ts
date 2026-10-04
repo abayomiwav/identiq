@@ -5,6 +5,9 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/services/prisma.service';
 import { AuthService } from './auth.service';
 
+/** Shape of the argument AuthService passes to `prisma.user.create`. */
+type UserCreateArgs = { data: { email: string; passwordHash: string } };
+
 describe('AuthService', () => {
   let service: AuthService;
   let prisma: { user: { findUnique: jest.Mock; create: jest.Mock } };
@@ -43,7 +46,8 @@ describe('AuthService', () => {
         password: 'password123',
       });
 
-      const createdData = prisma.user.create.mock.calls[0][0].data;
+      const [createArgs] = prisma.user.create.mock.calls[0] as [UserCreateArgs];
+      const createdData = createArgs.data;
       expect(createdData.passwordHash).not.toBe('password123');
       expect(
         await bcrypt.compare('password123', createdData.passwordHash),
