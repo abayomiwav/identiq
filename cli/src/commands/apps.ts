@@ -43,3 +43,12 @@ export async function rotateApiKey(appId: string): Promise<CreatedApp> {
     accessToken: config.accessToken,
   });
 }
+
+/** Permanently deletes an app. Every user grant to it is removed with it. */
+export async function deleteApp(appId: string): Promise<void> {
+  const config = requireConfig();
+  await apiRequest<void>('DELETE', `/apps/${encodeURIComponent(appId)}`, {
+    apiUrl: config.apiUrl,
+    accessToken: config.accessToken,
+  });
+}

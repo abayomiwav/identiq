@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { saveConfig } from '../config/config';
-import { createApp, listApps, rotateApiKey } from './apps';
+import { createApp, deleteApp, listApps, rotateApiKey } from './apps';
 
 describe('apps commands', () => {
   let tempDir: string;
@@ -62,5 +62,22 @@ describe('apps commands', () => {
     process.env.IDENTIQ_CONFIG_DIR = mkdtempSync(join(tmpdir(), 'identiq-cli-loggedout-'));
 
     await expect(listApps()).rejects.toThrow('Not logged in');
+  });
+
+  it('deleteApp sends an authenticated DELETE for the given app', async () => {
+    fetchMock.mockResolvedValue({ ok: true, json: async () => undefined });
+
+    await deleteApp('app-1');
+
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://api.example.test/apps/app-1');
+    expect(init.method).toBe('DELETE');
+    expect(init.headers.authorization).toBe('Bearer token-abc');
+  });
+
+  it('deleteApp surfaces API errors such as deleting someone else’s app', async () => {
+    fetchMock.mockResolvedValue({ ok: false, status: 403, json: async () => ({ message: 'You do not own this app' }) });
+
+    await expect(deleteApp('app-1')).rejects.toThrow('You do not own this app');
   });
 });
