@@ -53,6 +53,17 @@ export class AppsController {
     return this.appsService.regenerateApiKey(user.userId, id);
   }
 
+  /** Signs future webhook deliveries with a new secret; the old one stops verifying immediately. */
+  @Post(':id/rotate-webhook-secret')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  rotateWebhookSecret(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+  ) {
+    return this.appsService.rotateWebhookSecret(user.userId, id);
+  }
+
   @Delete(':id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
