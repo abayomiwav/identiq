@@ -18,3 +18,6 @@ labels: enhancement
 <!-- Any other approaches you thought about. -->
 
 **Additional context**
+
+**Would you like to work on this?**
+- [ ] Yes, I'd like to open a PR for it
