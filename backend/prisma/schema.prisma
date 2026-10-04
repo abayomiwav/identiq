@@ -23,6 +23,12 @@ enum CredentialStatus {
   REVOKED
 }
 
+enum WebhookDeliveryStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
 enum PermissionStatus {
   ACTIVE
   REVOKED
@@ -70,21 +76,22 @@ model IdentiqApp {
 
   issuedCredentials Credential[]
   permissionGrants  PermissionGrant[]
+  webhookDeliveries WebhookDelivery[]
 
   @@map("identiq_apps")
 }
 
 model Credential {
-  id                String            @id @default(uuid())
+  id                String           @id @default(uuid())
   identityId        String
-  identity          Identity          @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identity          Identity         @relation(fields: [identityId], references: [id], onDelete: Cascade)
   type              CredentialType
-  status            CredentialStatus  @default(ACTIVE)
+  status            CredentialStatus @default(ACTIVE)
   /// SHA-256 hex digest of the evidence the issuer checked — never the evidence itself.
   evidenceHash      String
   issuerAppId       String?
-  issuerApp         IdentiqApp?       @relation(fields: [issuerAppId], references: [id], onDelete: SetNull)
-  issuedAt          DateTime          @default(now())
+  issuerApp         IdentiqApp?      @relation(fields: [issuerAppId], references: [id], onDelete: SetNull)
+  issuedAt          DateTime         @default(now())
   expiresAt         DateTime?
   revokedAt         DateTime?
   chainCredentialId String?
@@ -94,14 +101,14 @@ model Credential {
 }
 
 model PermissionGrant {
-  id                String            @id @default(uuid())
+  id                String           @id @default(uuid())
   identityId        String
-  identity          Identity          @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identity          Identity         @relation(fields: [identityId], references: [id], onDelete: Cascade)
   appId             String
-  app               IdentiqApp        @relation(fields: [appId], references: [id], onDelete: Cascade)
+  app               IdentiqApp       @relation(fields: [appId], references: [id], onDelete: Cascade)
   credentialType    CredentialType
-  status            PermissionStatus  @default(ACTIVE)
-  grantedAt         DateTime          @default(now())
+  status            PermissionStatus @default(ACTIVE)
+  grantedAt         DateTime         @default(now())
   expiresAt         DateTime?
   revokedAt         DateTime?
   chainPermissionId String?
@@ -109,4 +116,22 @@ model PermissionGrant {
   @@unique([identityId, appId, credentialType])
   @@index([appId])
   @@map("permission_grants")
+}
+
+/// One row per webhook event sent to an app, updated on every attempt so failed deliveries are visible.
+model WebhookDelivery {
+  id         String                @id @default(uuid())
+  appId      String
+  app        IdentiqApp            @relation(fields: [appId], references: [id], onDelete: Cascade)
+  event      String
+  payload    Json
+  status     WebhookDeliveryStatus @default(PENDING)
+  attempts   Int                   @default(0)
+  lastStatus Int?
+  lastError  String?
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  @@index([appId, createdAt])
+  @@map("webhook_deliveries")
 }
