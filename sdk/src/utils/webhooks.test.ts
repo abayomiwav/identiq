@@ -1,3 +1,5 @@
+/** Tests for webhook signature verification and payload parsing. */
+
 import { createHmac } from 'node:crypto';
 import { WebhookEventType } from '@identiq/shared';
 import { describe, expect, it } from 'vitest';
