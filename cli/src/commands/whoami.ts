@@ -1,3 +1,5 @@
+/** `identiq whoami`: shows the signed-in account and API target. */
+
 import { requireConfig } from '../config/config';
 
 export interface WhoamiResult {
