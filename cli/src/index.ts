@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/** `identiq` CLI entrypoint: command definitions and error reporting. */
+
 import { Command } from 'commander';
 import { createApp, listApps, rotateApiKey } from './commands/apps';
 import { login } from './commands/login';
