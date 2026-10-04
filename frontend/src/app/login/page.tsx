@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { AuthLayout } from "@/components/auth-layout";
 import { TextField } from "@/components/text-field";
 import { useAuth } from "@/context/auth-context";
+import { safeNextPath } from "@/lib/next-path";
 import { ApiError } from "@/services/api";
 import { Alert, Button } from "@/components/ui";
 
@@ -26,7 +27,7 @@ function LoginForm() {
     try {
       await login(email, password);
       toast.success("Welcome back");
-      router.push(searchParams.get("next") ?? "/dashboard");
+      router.push(safeNextPath(searchParams.get("next")));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     } finally {
