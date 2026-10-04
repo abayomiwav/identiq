@@ -1,3 +1,8 @@
+/**
+ * Helpers for receiving Identiq webhooks: signature verification and payload
+ * parsing.
+ */
+
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { WebhookEventType, WebhookPayload } from '@identiq/shared';
 
