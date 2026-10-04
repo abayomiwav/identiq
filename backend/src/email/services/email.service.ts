@@ -1,3 +1,8 @@
+/**
+ * Best-effort transactional email over SMTP; logs instead of sending when SMTP
+ * isn't configured.
+ */
+
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createTransport, Transporter } from 'nodemailer';
