@@ -1,3 +1,7 @@
+/**
+ * Request bodies for granting a permission (user) and checking access (app).
+ */
+
 import { ApiProperty } from '@nestjs/swagger';
 import { CredentialType } from '@identiq/shared';
 import {
