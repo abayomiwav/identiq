@@ -1,3 +1,5 @@
+/** Home page closing call-to-action. */
+
 "use client";
 
 import Link from "next/link";
