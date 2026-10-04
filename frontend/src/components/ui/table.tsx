@@ -1,7 +1,14 @@
 export function Table({ children }: { children: React.ReactNode }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[640px] text-left text-sm">{children}</table>
+    <div className="relative">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[640px] text-left text-sm">{children}</table>
+      </div>
+      {/* Below 640px the table scrolls sideways; fade the edge so that's discoverable. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-card to-transparent sm:hidden"
+      />
     </div>
   );
 }
