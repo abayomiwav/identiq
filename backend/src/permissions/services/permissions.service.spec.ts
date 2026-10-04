@@ -1,3 +1,8 @@
+/**
+ * Tests for PermissionsService: grants, revocation and the app-facing access
+ * check.
+ */
+
 import {
   ConflictException,
   ForbiddenException,
