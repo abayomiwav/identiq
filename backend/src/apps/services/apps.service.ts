@@ -1,3 +1,8 @@
+/**
+ * Developer app lifecycle. API keys are returned once and stored only as
+ * SHA-256 hashes.
+ */
+
 import {
   ForbiddenException,
   Injectable,
