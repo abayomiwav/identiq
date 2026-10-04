@@ -1,3 +1,5 @@
+/** Labelled text input used across the auth and dashboard forms. */
+
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
