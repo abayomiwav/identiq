@@ -1,3 +1,5 @@
+/** Tests for the evidence hashing, API key, and webhook signing helpers. */
+
 import {
   generateApiKey,
   generateWebhookSecret,
