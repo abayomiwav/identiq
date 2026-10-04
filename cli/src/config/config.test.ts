@@ -1,3 +1,4 @@
+import { mkdtempSync, rmSync, statSync, writeFileSync } from 'node:fs';
 /** Tests for CLI config storage and API URL resolution. */
 
 import { mkdtempSync, rmSync } from 'node:fs';
@@ -31,6 +32,29 @@ describe('config', () => {
       accessToken: 'token-123',
       email: 'a@identiq.app',
     });
+  });
+
+  it.skipIf(process.platform === 'win32')('saves config.json with owner-only (600) permissions', () => {
+    saveConfig({ apiUrl: 'https://api.example.test', accessToken: 'token-abc', email: 'a@identiq.app' });
+
+    expect(statSync(join(tempDir, 'config.json')).mode & 0o777).toBe(0o600);
+  });
+
+  it.skipIf(process.platform === 'win32')('tightens a pre-existing world-readable config.json to 600', () => {
+    writeFileSync(join(tempDir, 'config.json'), '{}', { mode: 0o644 });
+
+    saveConfig({ apiUrl: 'https://api.example.test', accessToken: 'token-abc', email: 'a@identiq.app' });
+
+    expect(statSync(join(tempDir, 'config.json')).mode & 0o777).toBe(0o600);
+  });
+
+  it.skipIf(process.platform === 'win32')('creates a missing config directory as 700', () => {
+    const nested = join(tempDir, 'nested');
+    process.env.IDENTIQ_CONFIG_DIR = nested;
+
+    saveConfig({ apiUrl: 'https://api.example.test', accessToken: 'token-abc', email: 'a@identiq.app' });
+
+    expect(statSync(nested).mode & 0o777).toBe(0o700);
   });
 
   it('clearConfig removes a saved config', () => {
