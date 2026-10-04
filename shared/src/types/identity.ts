@@ -1,3 +1,5 @@
+/** Identity domain type shared by the API, web app and SDK. */
+
 export interface Identity {
   id: string;
   userId: string;
