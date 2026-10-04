@@ -1,3 +1,5 @@
+/** Button primitive with primary/outline/danger/ghost variants. */
+
 import { forwardRef } from "react";
 import { cn } from "@/lib/cn";
 
