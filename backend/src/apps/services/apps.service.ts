@@ -87,6 +87,22 @@ export class AppsService {
     return { app: sanitize(app), apiKey: fullKey };
   }
 
+  /**
+   * Replaces the app's webhook signing secret. Deliveries are signed with the
+   * new secret immediately, so the developer must update their receiver.
+   */
+  async rotateWebhookSecret(
+    ownerId: string,
+    appId: string,
+  ): Promise<SanitizedApp> {
+    await this.findOwnedApp(ownerId, appId);
+    const app = await this.prisma.identiqApp.update({
+      where: { id: appId },
+      data: { webhookSecret: generateWebhookSecret() },
+    });
+    return sanitize(app);
+  }
+
   async deleteApp(ownerId: string, appId: string): Promise<void> {
     await this.findOwnedApp(ownerId, appId);
     await this.prisma.identiqApp.delete({ where: { id: appId } });
