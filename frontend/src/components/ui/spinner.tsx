@@ -1,3 +1,5 @@
+/** Loading indicator with a text label. */
+
 interface SpinnerProps {
   label?: string;
 }
