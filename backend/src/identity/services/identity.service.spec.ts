@@ -3,7 +3,11 @@
  * reputation.
  */
 
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../prisma/services/prisma.service';
 import { StellarService } from '../../stellar/services/stellar.service';
@@ -19,6 +23,7 @@ describe('IdentityService', () => {
   let stellarService: {
     buildRegisterIdentityXdr: jest.Mock;
     submitSignedTransaction: jest.Mock;
+    assertRegisterIdentityXdr: jest.Mock;
   };
 
   const STELLAR_PUBLIC_KEY =
@@ -33,6 +38,7 @@ describe('IdentityService', () => {
     stellarService = {
       buildRegisterIdentityXdr: jest.fn().mockResolvedValue('unsigned-xdr'),
       submitSignedTransaction: jest.fn(),
+      assertRegisterIdentityXdr: jest.fn(),
     };
 
     const moduleRef = await Test.createTestingModule({
@@ -95,6 +101,7 @@ describe('IdentityService', () => {
       prisma.identity.findUnique.mockResolvedValue({
         id: 'identity-1',
         userId: 'user-1',
+        stellarPublicKey: STELLAR_PUBLIC_KEY,
         chainIdentityId: null,
         createdAt: new Date(),
       });
@@ -116,6 +123,27 @@ describe('IdentityService', () => {
         data: { chainIdentityId: '7' },
       });
       expect(result.chainIdentityId).toBe('7');
+      expect(stellarService.assertRegisterIdentityXdr).toHaveBeenCalledWith(
+        'signed-xdr',
+        STELLAR_PUBLIC_KEY,
+      );
+    });
+
+    it('does not submit a transaction that fails validation', async () => {
+      prisma.identity.findUnique.mockResolvedValue({
+        id: 'identity-1',
+        stellarPublicKey: STELLAR_PUBLIC_KEY,
+        chainIdentityId: null,
+      });
+      stellarService.assertRegisterIdentityXdr.mockImplementation(() => {
+        throw new BadRequestException('wrong contract');
+      });
+
+      await expect(
+        service.confirmRegistration('user-1', { signedXdr: 'signed-xdr' }),
+      ).rejects.toThrow(BadRequestException);
+      expect(stellarService.submitSignedTransaction).not.toHaveBeenCalled();
+      expect(prisma.identity.update).not.toHaveBeenCalled();
     });
 
     it('rejects re-confirming an identity that is already anchored on-chain', async () => {

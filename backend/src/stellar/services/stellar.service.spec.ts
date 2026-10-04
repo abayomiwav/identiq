@@ -3,10 +3,12 @@
  * signing.
  */
 
+import { BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import {
   Account,
+  Address,
   BASE_FEE,
   Keypair,
   Networks,
@@ -131,5 +133,74 @@ describe('StellarService', () => {
         1000,
       ),
     ).rejects.toThrow('PLATFORM_SIGNER_SECRET is not configured');
+  });
+
+  describe('assertRegisterIdentityXdr', () => {
+    const owner = Keypair.random();
+    const otherContract =
+      'CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE';
+
+    function buildXdr(
+      contract: string,
+      method: string,
+      ownerKey: string,
+    ): string {
+      const tx = new TransactionBuilder(new Account(owner.publicKey(), '1'), {
+        fee: BASE_FEE,
+        networkPassphrase: Networks.TESTNET,
+      })
+        .addOperation(
+          Operation.invokeContractFunction({
+            contract,
+            function: method,
+            args: [new Address(ownerKey).toScVal()],
+          }),
+        )
+        .setTimeout(300)
+        .build();
+      tx.sign(owner);
+      return tx.toXDR();
+    }
+
+    it('accepts register_identity on our contract for the linked owner', async () => {
+      const service = await buildService();
+      expect(() =>
+        service.assertRegisterIdentityXdr(
+          buildXdr(contractId, 'register_identity', owner.publicKey()),
+          owner.publicKey(),
+        ),
+      ).not.toThrow();
+    });
+
+    it.each([
+      ['a different contract', otherContract, 'register_identity'],
+      ['a different method', contractId, 'get_identity'],
+    ])('rejects %s', async (_label, contract, method) => {
+      const service = await buildService();
+      expect(() =>
+        service.assertRegisterIdentityXdr(
+          buildXdr(contract, method, owner.publicKey()),
+          owner.publicKey(),
+        ),
+      ).toThrow(BadRequestException);
+    });
+
+    it('rejects a registration for a different owner', async () => {
+      const service = await buildService();
+      const someoneElse = Keypair.random().publicKey();
+      expect(() =>
+        service.assertRegisterIdentityXdr(
+          buildXdr(contractId, 'register_identity', someoneElse),
+          owner.publicKey(),
+        ),
+      ).toThrow(BadRequestException);
+    });
+
+    it('rejects garbage input', async () => {
+      const service = await buildService();
+      expect(() =>
+        service.assertRegisterIdentityXdr('not-xdr', owner.publicKey()),
+      ).toThrow(BadRequestException);
+    });
   });
 });
