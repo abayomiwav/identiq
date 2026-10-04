@@ -150,4 +150,38 @@ describe('AppsService', () => {
       expect(prisma.identiqApp.update).not.toHaveBeenCalled();
     });
   });
+
+  describe('rotateWebhookSecret', () => {
+    it('replaces the webhook secret with a fresh whsec_ value', async () => {
+      prisma.identiqApp.findUnique.mockResolvedValue({
+        id: 'app-1',
+        ownerId: 'user-1',
+        webhookSecret: 'whsec_old',
+      });
+      prisma.identiqApp.update.mockImplementation(({ data }) => ({
+        id: 'app-1',
+        ownerId: 'user-1',
+        apiKeyHash: 'hash',
+        ...data,
+      }));
+
+      const result = await service.rotateWebhookSecret('user-1', 'app-1');
+
+      expect(result.webhookSecret).toMatch(/^whsec_[0-9a-f]{48}$/);
+      expect(result.webhookSecret).not.toBe('whsec_old');
+      expect(result).not.toHaveProperty('apiKeyHash');
+    });
+
+    it('rejects rotation for an app the caller does not own', async () => {
+      prisma.identiqApp.findUnique.mockResolvedValue({
+        id: 'app-1',
+        ownerId: 'someone-else',
+      });
+
+      await expect(
+        service.rotateWebhookSecret('user-1', 'app-1'),
+      ).rejects.toThrow(ForbiddenException);
+      expect(prisma.identiqApp.update).not.toHaveBeenCalled();
+    });
+  });
 });
