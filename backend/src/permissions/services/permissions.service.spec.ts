@@ -221,4 +221,44 @@ describe('PermissionsService', () => {
       ).rejects.toThrow(ForbiddenException);
     });
   });
+
+  describe('listMyGrants', () => {
+    it('includes the app name and reports lapsed grants as EXPIRED', async () => {
+      const dayMs = 24 * 60 * 60 * 1000;
+      const app = { id: 'app-1', name: 'Acme Lending' };
+      prisma.permissionGrant.findMany.mockResolvedValue([
+        {
+          id: 'g-old',
+          status: 'ACTIVE',
+          expiresAt: new Date(Date.now() - dayMs),
+          app,
+        },
+        {
+          id: 'g-live',
+          status: 'ACTIVE',
+          expiresAt: new Date(Date.now() + dayMs),
+          app,
+        },
+        {
+          id: 'g-revoked',
+          status: 'REVOKED',
+          expiresAt: new Date(Date.now() - dayMs),
+          app,
+        },
+      ]);
+
+      const result = await service.listMyGrants('user-1');
+
+      expect(prisma.permissionGrant.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          include: { app: { select: { id: true, name: true } } },
+        }),
+      );
+      expect(result.map((g) => [g.id, g.status, g.app.name])).toEqual([
+        ['g-old', 'EXPIRED', 'Acme Lending'],
+        ['g-live', 'ACTIVE', 'Acme Lending'],
+        ['g-revoked', 'REVOKED', 'Acme Lending'],
+      ]);
+    });
+  });
 });

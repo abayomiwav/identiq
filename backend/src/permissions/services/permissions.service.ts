@@ -22,6 +22,10 @@ import {
 
 const DEFAULT_GRANT_TTL_DAYS = 30;
 
+export type GrantWithApp = PermissionGrant & {
+  app: { id: string; name: string };
+};
+
 export interface AccessCheckResult {
   verified: boolean;
   credential: { type: string; issuedAt: Date; expiresAt: Date | null } | null;
@@ -139,12 +143,24 @@ export class PermissionsService {
     return updated;
   }
 
-  async listMyGrants(userId: string): Promise<PermissionGrant[]> {
+  /**
+   * The user's grants with the app's display name attached, and ACTIVE
+   * grants past `expiresAt` reported as EXPIRED (nothing writes that status
+   * to the DB; `checkAccess` already treats them as expired).
+   */
+  async listMyGrants(userId: string): Promise<GrantWithApp[]> {
     const identity = await this.identityService.getMyIdentity(userId);
-    return this.prisma.permissionGrant.findMany({
+    const grants = await this.prisma.permissionGrant.findMany({
       where: { identityId: identity.id },
       orderBy: { grantedAt: 'desc' },
+      include: { app: { select: { id: true, name: true } } },
     });
+    const now = new Date();
+    return grants.map((grant) =>
+      grant.status === 'ACTIVE' && grant.expiresAt && grant.expiresAt <= now
+        ? { ...grant, status: 'EXPIRED' }
+        : grant,
+    );
   }
 
   /** Called by third-party apps (API key auth) to check what a granted identity is willing to reveal. */
