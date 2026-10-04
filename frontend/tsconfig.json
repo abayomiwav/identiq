@@ -1,3 +1,4 @@
+// TypeScript settings for the Next.js app; `@/` maps to src/.
 {
   "compilerOptions": {
     "target": "ES2017",
