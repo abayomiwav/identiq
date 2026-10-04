@@ -1,3 +1,6 @@
+# Repo-wide ignores: dependencies, build outputs (dist, .next, Rust target),
+# local env files and editor/OS cruft.
+
 # dependencies
 node_modules/
 .pnp
