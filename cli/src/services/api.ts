@@ -1,3 +1,5 @@
+/** Minimal fetch wrapper for the Identiq API used by every CLI command. */
+
 export class CliApiError extends Error {
   constructor(
     message: string,
