@@ -1,3 +1,5 @@
+/** Dashboard navigation: sidebar on desktop, compact nav strip on mobile. */
+
 "use client";
 
 import Link from "next/link";
