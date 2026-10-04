@@ -29,6 +29,9 @@ const result = await identiq.checkAccess({
 verifyWebhookSignature(webhookSecret, rawBody, req.headers["x-identiq-signature"]);
 ```
 
+Requests time out after 10 seconds by default, throwing an `IdentiqApiError`
+with `status: 0`; pass `timeoutMs` to `new IdentiqClient({ ... })` to change it.
+
 Keep your API key server-side — never ship it to a browser.
 
 ```bash

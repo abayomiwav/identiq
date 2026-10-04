@@ -6,6 +6,8 @@ export interface IdentiqClientOptions {
   apiKey: string;
   /** Defaults to the production Identiq API. */
   baseUrl?: string;
+  /** Abort a request that hasn't completed after this many milliseconds. Defaults to 10000. */
+  timeoutMs?: number;
 }
 
 export interface CheckAccessParams {
@@ -26,6 +28,7 @@ export interface AccessCheckResult {
 }
 
 const DEFAULT_BASE_URL = 'https://api.identiq.app';
+const DEFAULT_TIMEOUT_MS = 10_000;
 
 /**
  * Server-side client for apps integrating with Identiq. It never sees a
@@ -36,6 +39,7 @@ const DEFAULT_BASE_URL = 'https://api.identiq.app';
 export class IdentiqClient {
   private readonly apiKey: string;
   private readonly baseUrl: string;
+  private readonly timeoutMs: number;
 
   constructor(options: IdentiqClientOptions) {
     if (!options.apiKey) {
@@ -43,6 +47,7 @@ export class IdentiqClient {
     }
     this.apiKey = options.apiKey;
     this.baseUrl = (options.baseUrl ?? DEFAULT_BASE_URL).replace(/\/$/, '');
+    this.timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   }
 
   /**
@@ -52,14 +57,23 @@ export class IdentiqClient {
    * error, not a "false" verification result.
    */
   async checkAccess(params: CheckAccessParams): Promise<AccessCheckResult> {
-    const response = await fetch(`${this.baseUrl}/permissions/check`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-identiq-api-key': this.apiKey,
-      },
-      body: JSON.stringify(params),
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${this.baseUrl}/permissions/check`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-identiq-api-key': this.apiKey,
+        },
+        body: JSON.stringify(params),
+        signal: AbortSignal.timeout(this.timeoutMs),
+      });
+    } catch (error) {
+      if ((error as Error).name === 'TimeoutError') {
+        throw new IdentiqApiError(`Identiq API request timed out after ${this.timeoutMs}ms`, 0, undefined);
+      }
+      throw error;
+    }
 
     const body = await response.json().catch(() => undefined);
 
