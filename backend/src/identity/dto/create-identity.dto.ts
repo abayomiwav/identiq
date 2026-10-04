@@ -1,3 +1,8 @@
+/**
+ * Request body for POST /identity: the Stellar public key to anchor the
+ * identity to.
+ */
+
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Matches } from 'class-validator';
 
