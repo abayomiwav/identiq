@@ -1,3 +1,4 @@
+// Compiles the CLI to CommonJS in dist/ for the `identiq` bin.
 {
   "compilerOptions": {
     "target": "ES2022",
