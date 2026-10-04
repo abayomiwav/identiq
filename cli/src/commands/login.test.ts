@@ -1,3 +1,8 @@
+/**
+ * Tests for `identiq login`: authenticates and persists the token to the
+ * config dir.
+ */
+
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
