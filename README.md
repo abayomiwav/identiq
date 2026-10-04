@@ -139,3 +139,9 @@ and tests: `shared/src/utils/reputation.ts`.
 - Zero-knowledge proofs — prove a credential's result without revealing
   the underlying data even to Identiq.
 - Mainnet deployment and usage-based pricing.
+
+## Contributing
+
+Issues and PRs are welcome — start with [CONTRIBUTING.md](./CONTRIBUTING.md)
+for setup and the checks every PR must pass. Report vulnerabilities
+privately as described in [SECURITY.md](./SECURITY.md).
