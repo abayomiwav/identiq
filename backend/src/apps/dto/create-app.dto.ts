@@ -1,3 +1,8 @@
+/**
+ * Request body for POST /apps: app name, allowed redirect URIs and optional
+ * webhook URL.
+ */
+
 import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayMinSize,
