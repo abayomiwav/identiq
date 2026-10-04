@@ -1,3 +1,8 @@
+/**
+ * Permission endpoints: users grant/list/revoke app access (JWT); apps check
+ * access with their API key.
+ */
+
 import {
   Body,
   Controller,
