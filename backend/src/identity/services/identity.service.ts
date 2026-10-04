@@ -24,6 +24,13 @@ export class IdentityService {
     private readonly stellarService: StellarService,
   ) {}
 
+  /**
+   * Links a Stellar address and returns the unsigned `register_identity` XDR.
+   * Calling it again before the identity is anchored on-chain is a retry: it
+   * returns a fresh XDR (and switches the linked address if a different one
+   * is given) instead of failing, so an abandoned or failed signing attempt
+   * never locks the account out.
+   */
   async createIdentity(
     userId: string,
     dto: CreateIdentityDto,
@@ -31,26 +38,40 @@ export class IdentityService {
     const existing = await this.prisma.identity.findUnique({
       where: { userId },
     });
-    if (existing) {
+    if (existing?.chainIdentityId) {
       throw new ConflictException('This account already has an identity');
     }
 
-    const publicKeyTaken = await this.prisma.identity.findUnique({
-      where: { stellarPublicKey: dto.stellarPublicKey },
-    });
-    if (publicKeyTaken) {
-      throw new ConflictException(
-        'This Stellar address is already linked to another identity',
-      );
+    if (existing?.stellarPublicKey !== dto.stellarPublicKey) {
+      const publicKeyTaken = await this.prisma.identity.findUnique({
+        where: { stellarPublicKey: dto.stellarPublicKey },
+      });
+      if (publicKeyTaken) {
+        throw new ConflictException(
+          'This Stellar address is already linked to another identity',
+        );
+      }
     }
 
-    const identity = await this.prisma.identity.create({
-      data: { userId, stellarPublicKey: dto.stellarPublicKey },
-    });
-
+    // Build first: if the wallet is unfunded or the RPC call fails, nothing
+    // is persisted and the user can simply try again.
     const unsignedXdr = await this.stellarService.buildRegisterIdentityXdr(
       dto.stellarPublicKey,
     );
+
+    let identity: Identity;
+    if (!existing) {
+      identity = await this.prisma.identity.create({
+        data: { userId, stellarPublicKey: dto.stellarPublicKey },
+      });
+    } else if (existing.stellarPublicKey !== dto.stellarPublicKey) {
+      identity = await this.prisma.identity.update({
+        where: { id: existing.id },
+        data: { stellarPublicKey: dto.stellarPublicKey },
+      });
+    } else {
+      identity = existing;
+    }
 
     return { identity, unsignedXdr };
   }

@@ -61,8 +61,11 @@ describe('IdentityService', () => {
       );
     });
 
-    it('rejects a second identity for the same account', async () => {
-      prisma.identity.findUnique.mockResolvedValueOnce({ id: 'existing' });
+    it('rejects a second identity once the first is anchored on-chain', async () => {
+      prisma.identity.findUnique.mockResolvedValueOnce({
+        id: 'existing',
+        chainIdentityId: '7',
+      });
 
       await expect(
         service.createIdentity('user-1', {
@@ -82,6 +85,63 @@ describe('IdentityService', () => {
           stellarPublicKey: STELLAR_PUBLIC_KEY,
         }),
       ).rejects.toThrow(ConflictException);
+    });
+
+    it('returns a fresh XDR when retrying before on-chain registration', async () => {
+      const existing = {
+        id: 'existing',
+        stellarPublicKey: STELLAR_PUBLIC_KEY,
+        chainIdentityId: null,
+      };
+      prisma.identity.findUnique.mockResolvedValueOnce(existing);
+
+      const result = await service.createIdentity('user-1', {
+        stellarPublicKey: STELLAR_PUBLIC_KEY,
+      });
+
+      expect(result).toEqual({
+        identity: existing,
+        unsignedXdr: 'unsigned-xdr',
+      });
+      expect(prisma.identity.create).not.toHaveBeenCalled();
+      expect(prisma.identity.update).not.toHaveBeenCalled();
+    });
+
+    it('switches the linked address on retry with a different wallet', async () => {
+      const otherKey =
+        'GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H';
+      prisma.identity.findUnique
+        .mockResolvedValueOnce({
+          id: 'existing',
+          stellarPublicKey: STELLAR_PUBLIC_KEY,
+          chainIdentityId: null,
+        })
+        .mockResolvedValueOnce(null); // new key not taken
+      prisma.identity.update.mockResolvedValue({
+        id: 'existing',
+        stellarPublicKey: otherKey,
+      });
+
+      await service.createIdentity('user-1', { stellarPublicKey: otherKey });
+
+      expect(prisma.identity.update).toHaveBeenCalledWith({
+        where: { id: 'existing' },
+        data: { stellarPublicKey: otherKey },
+      });
+    });
+
+    it('persists nothing when building the registration XDR fails', async () => {
+      prisma.identity.findUnique.mockResolvedValue(null);
+      stellarService.buildRegisterIdentityXdr.mockRejectedValue(
+        new Error('Account not found'),
+      );
+
+      await expect(
+        service.createIdentity('user-1', {
+          stellarPublicKey: STELLAR_PUBLIC_KEY,
+        }),
+      ).rejects.toThrow('Account not found');
+      expect(prisma.identity.create).not.toHaveBeenCalled();
     });
   });
 
