@@ -1,3 +1,8 @@
+/**
+ * Home page section: what Identiq offers individuals, businesses and
+ * developers.
+ */
+
 "use client";
 
 import Link from "next/link";
