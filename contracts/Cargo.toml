@@ -1,3 +1,6 @@
+# Cargo workspace for Identiq's Soroban contracts; release profile tuned for
+# small, overflow-checked wasm.
+
 [workspace]
 resolver = "2"
 members = [
