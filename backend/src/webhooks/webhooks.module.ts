@@ -1,3 +1,5 @@
+/** Webhooks module: signed event delivery to third-party apps. */
+
 import { Module } from '@nestjs/common';
 import { WebhooksService } from './services/webhooks.service';
 
