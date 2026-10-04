@@ -7,4 +7,6 @@ export interface Grant {
   status: "ACTIVE" | "REVOKED" | "EXPIRED";
   grantedAt: string;
   expiresAt: string | null;
+  /** The app this grant is for, so the UI can show its name instead of a UUID. */
+  app: { id: string; name: string };
 }
