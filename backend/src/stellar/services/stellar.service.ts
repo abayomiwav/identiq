@@ -3,12 +3,13 @@
  * transactions, and signs platform attestations.
  */
 
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   Address,
   BASE_FEE,
   Contract,
+  FeeBumpTransaction,
   Keypair,
   nativeToScVal,
   Networks,
@@ -128,6 +129,59 @@ export class StellarService {
         nativeToScVal(credentialChainId, { type: 'u64' }),
       ],
     );
+  }
+
+  /**
+   * Throws unless `signedXdr` is exactly one `register_identity` call on our
+   * identity contract for `expectedOwner`. Run this before submitting a
+   * client-signed registration, so a user can't submit some other contract
+   * call and have its return value recorded as their on-chain identity id.
+   */
+  assertRegisterIdentityXdr(signedXdr: string, expectedOwner: string): void {
+    const invalid = (reason: string) =>
+      new BadRequestException(`Invalid registration transaction: ${reason}`);
+
+    let transaction: ReturnType<typeof TransactionBuilder.fromXDR>;
+    try {
+      transaction = TransactionBuilder.fromXDR(
+        signedXdr,
+        this.networkPassphrase,
+      );
+    } catch {
+      throw invalid('not a valid transaction envelope');
+    }
+    if (transaction instanceof FeeBumpTransaction) {
+      throw invalid('fee-bump transactions are not accepted');
+    }
+    if (transaction.operations.length !== 1) {
+      throw invalid('expected exactly one operation');
+    }
+
+    const [operation] = transaction.operations;
+    if (operation.type !== 'invokeHostFunction') {
+      throw invalid('not a contract invocation');
+    }
+    if (
+      operation.func.switch() !==
+      xdr.HostFunctionType.hostFunctionTypeInvokeContract()
+    ) {
+      throw invalid('not a contract invocation');
+    }
+
+    const call = operation.func.invokeContract();
+    const contractId = Address.fromScAddress(call.contractAddress()).toString();
+    if (contractId !== this.getContract().contractId()) {
+      throw invalid('wrong contract');
+    }
+    if (call.functionName().toString() !== 'register_identity') {
+      throw invalid('wrong contract method');
+    }
+
+    const [ownerArg] = call.args();
+    const owner = ownerArg ? Address.fromScVal(ownerArg).toString() : '';
+    if (owner !== expectedOwner) {
+      throw invalid('owner does not match the linked Stellar address');
+    }
   }
 
   /** Submits a transaction a wallet has already signed. This service never holds the signing key. */
