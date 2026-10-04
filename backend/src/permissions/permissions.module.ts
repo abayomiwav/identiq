@@ -1,3 +1,5 @@
+/** Permissions module: user consent grants and the app-facing access check. */
+
 import { Module } from '@nestjs/common';
 import { EmailModule } from '../email/email.module';
 import { IdentityModule } from '../identity/identity.module';
