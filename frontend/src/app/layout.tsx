@@ -1,3 +1,5 @@
+/** Root layout: fonts, metadata, auth context and toasts for every page. */
+
 import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { Toaster } from "sonner";
