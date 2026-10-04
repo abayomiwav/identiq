@@ -1,3 +1,8 @@
+/**
+ * Dashboard shell: redirects signed-out users to /login and renders the
+ * sidebar.
+ */
+
 "use client";
 
 import { useEffect } from "react";
