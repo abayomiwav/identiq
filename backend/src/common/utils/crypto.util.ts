@@ -1,3 +1,8 @@
+/**
+ * Crypto helpers: evidence hashing, API key generation/hashing, and HMAC
+ * webhook signatures.
+ */
+
 import {
   createHash,
   createHmac,
