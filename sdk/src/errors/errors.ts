@@ -1,3 +1,5 @@
+/** Error type thrown by the SDK for failed Identiq API calls. */
+
 export class IdentiqApiError extends Error {
   constructor(
     message: string,
