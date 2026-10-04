@@ -51,7 +51,7 @@ export function Sidebar() {
             Sign out
           </button>
         </div>
-        <nav className="flex gap-1 overflow-x-auto border-t border-border-strong px-2 py-1 md:mt-6 md:flex-col md:border-t-0 md:px-0 md:py-0">
+        <nav className="grid grid-cols-2 gap-1 border-t border-border-strong px-2 py-1 sm:flex md:mt-6 md:flex-col md:border-t-0 md:px-0 md:py-0">
           {LINKS.map((link) => {
             const active = pathname === link.href;
             const Icon = link.icon;
