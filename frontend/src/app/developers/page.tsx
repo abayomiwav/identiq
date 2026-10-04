@@ -1,3 +1,5 @@
+/** /developers: integration overview with SDK and webhook code samples. */
+
 "use client";
 
 import Link from "next/link";
