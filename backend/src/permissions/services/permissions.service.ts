@@ -1,3 +1,8 @@
+/**
+ * User consent grants and the access check apps call: returns pass/fail, never
+ * evidence.
+ */
+
 import {
   ConflictException,
   ForbiddenException,
