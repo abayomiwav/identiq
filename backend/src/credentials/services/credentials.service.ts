@@ -12,6 +12,7 @@ import {
 } from '@identiq/shared';
 import { Credential } from '@prisma/client';
 import { hashEvidence } from '../../common/utils/crypto.util';
+import { withEffectiveStatus } from '../../common/utils/effective-status.util';
 import { EmailService } from '../../email/services/email.service';
 import {
   renderCredentialIssuedEmail,
@@ -142,10 +143,14 @@ export class CredentialsService {
 
   async listMyCredentials(userId: string): Promise<Credential[]> {
     const identity = await this.identityService.getMyIdentity(userId);
-    return this.prisma.credential.findMany({
+    const credentials = await this.prisma.credential.findMany({
       where: { identityId: identity.id },
       orderBy: { issuedAt: 'desc' },
     });
+    const now = new Date();
+    return credentials.map((credential) =>
+      withEffectiveStatus(credential, now),
+    );
   }
 
   private async notifyOwner(

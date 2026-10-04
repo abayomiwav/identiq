@@ -219,4 +219,37 @@ describe('CredentialsService', () => {
       ).rejects.toThrow(ConflictException);
     });
   });
+
+  describe('listMyCredentials', () => {
+    it('reports credentials past expiresAt as EXPIRED', async () => {
+      const dayMs = 24 * 60 * 60 * 1000;
+      prisma.credential.findMany.mockResolvedValue([
+        {
+          id: 'old',
+          status: 'ACTIVE',
+          expiresAt: new Date(Date.now() - dayMs),
+        },
+        {
+          id: 'live',
+          status: 'ACTIVE',
+          expiresAt: new Date(Date.now() + dayMs),
+        },
+        { id: 'forever', status: 'ACTIVE', expiresAt: null },
+        {
+          id: 'gone',
+          status: 'REVOKED',
+          expiresAt: new Date(Date.now() - dayMs),
+        },
+      ]);
+
+      const result = await service.listMyCredentials('user-1');
+
+      expect(result.map((c) => [c.id, c.status])).toEqual([
+        ['old', 'EXPIRED'],
+        ['live', 'ACTIVE'],
+        ['forever', 'ACTIVE'],
+        ['gone', 'REVOKED'],
+      ]);
+    });
+  });
 });
