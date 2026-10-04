@@ -61,6 +61,39 @@ describe('IdentiqClient', () => {
 
     expect(fetchMock.mock.calls[0][0]).toBe('https://api.example.test/permissions/check');
   });
+  it('passes an abort signal so a stalled request cannot hang forever', async () => {
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ verified: true, credential: null, checkedAt: '' }) });
+
+    const client = new IdentiqClient({ apiKey: 'idq_test', baseUrl: 'https://api.example.test', timeoutMs: 2500 });
+    await client.checkAccess({ identityId: 'identity-1', credentialType: CredentialType.KYC_TIER1 });
+
+    expect(fetchMock.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal);
+  });
+
+  it('turns a timeout into an IdentiqApiError with a clear message', async () => {
+    fetchMock.mockImplementation(
+      (_url: string, init: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          init.signal?.addEventListener('abort', () => reject(init.signal?.reason));
+        }),
+    );
+
+    const client = new IdentiqClient({ apiKey: 'idq_test', baseUrl: 'https://api.example.test', timeoutMs: 20 });
+    const promise = client.checkAccess({ identityId: 'identity-1', credentialType: CredentialType.KYC_TIER1 });
+
+    await expect(promise).rejects.toBeInstanceOf(IdentiqApiError);
+    await expect(promise).rejects.toThrow('timed out after 20ms');
+  });
+
+  it('rethrows non-timeout network errors unchanged', async () => {
+    fetchMock.mockRejectedValue(new TypeError('fetch failed'));
+
+    const client = new IdentiqClient({ apiKey: 'idq_test', baseUrl: 'https://api.example.test' });
+
+    await expect(
+      client.checkAccess({ identityId: 'identity-1', credentialType: CredentialType.KYC_TIER1 }),
+    ).rejects.toThrow(TypeError);
+  });
 });
 
 describe('IdentiqApiError', () => {
@@ -71,4 +104,5 @@ describe('IdentiqApiError', () => {
     expect(error.status).toBe(500);
     expect(error.body).toEqual({ detail: 'oops' });
   });
+
 });
