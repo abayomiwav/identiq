@@ -44,13 +44,15 @@ export class IdentityService {
       );
     }
 
-    const identity = await this.prisma.identity.create({
-      data: { userId, stellarPublicKey: dto.stellarPublicKey },
-    });
-
+    // Build first: if the wallet is unfunded or the RPC call fails, nothing
+    // is persisted and the user can simply try again.
     const unsignedXdr = await this.stellarService.buildRegisterIdentityXdr(
       dto.stellarPublicKey,
     );
+
+    const identity = await this.prisma.identity.create({
+      data: { userId, stellarPublicKey: dto.stellarPublicKey },
+    });
 
     return { identity, unsignedXdr };
   }

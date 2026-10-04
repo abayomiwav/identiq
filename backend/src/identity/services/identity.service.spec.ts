@@ -83,6 +83,20 @@ describe('IdentityService', () => {
         }),
       ).rejects.toThrow(ConflictException);
     });
+
+    it('persists nothing when building the registration XDR fails', async () => {
+      prisma.identity.findUnique.mockResolvedValue(null);
+      stellarService.buildRegisterIdentityXdr.mockRejectedValue(
+        new Error('Account not found'),
+      );
+
+      await expect(
+        service.createIdentity('user-1', {
+          stellarPublicKey: STELLAR_PUBLIC_KEY,
+        }),
+      ).rejects.toThrow('Account not found');
+      expect(prisma.identity.create).not.toHaveBeenCalled();
+    });
   });
 
   describe('confirmRegistration', () => {
