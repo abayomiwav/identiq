@@ -33,7 +33,7 @@ describe('parseWebhookPayload', () => {
       JSON.stringify({
         event: WebhookEventType.CREDENTIAL_ISSUED,
         id: 'evt_1',
-        createdAt: '2026-01-01T00:00:00.000Z',
+        createdAt: new Date().toISOString(),
         data: { credentialId: 'cred-1' },
       }),
     );

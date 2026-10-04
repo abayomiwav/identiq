@@ -21,10 +21,47 @@ export function verifyWebhookSignature(secret: string, rawBody: string, signatur
   return timingSafeEqual(expectedBuf, actualBuf);
 }
 
-export function parseWebhookPayload<T = Record<string, unknown>>(rawBody: string): WebhookPayload<T> {
+export interface ParseWebhookOptions {
+  /**
+   * Reject payloads whose signed `createdAt` is more than this many seconds
+   * away from now, so a captured delivery can't be replayed later. Defaults
+   * to 300 (5 minutes); pass `false` to disable.
+   */
+  toleranceSeconds?: number | false;
+  /** Override the clock (tests). */
+  now?: Date;
+}
+
+const DEFAULT_TOLERANCE_SECONDS = 300;
+
+/**
+ * Parses a webhook body **after** `verifyWebhookSignature` has passed.
+ * Rejects unknown event types and stale deliveries. Freshness only stops
+ * replays outside the window: also deduplicate on `payload.id`, which stays
+ * the same when Identiq retries a delivery.
+ */
+export function parseWebhookPayload<T = Record<string, unknown>>(
+  rawBody: string,
+  options: ParseWebhookOptions = {},
+): WebhookPayload<T> {
   const payload = JSON.parse(rawBody) as WebhookPayload<T>;
   if (!Object.values(WebhookEventType).includes(payload.event)) {
     throw new Error(`Unrecognized Identiq webhook event: ${payload.event}`);
   }
+
+  const tolerance = options.toleranceSeconds ?? DEFAULT_TOLERANCE_SECONDS;
+  if (tolerance !== false) {
+    const createdAt = Date.parse(payload.createdAt);
+    if (Number.isNaN(createdAt)) {
+      throw new Error('Identiq webhook payload has no valid createdAt timestamp');
+    }
+    const ageSeconds = Math.abs((options.now ?? new Date()).getTime() - createdAt) / 1000;
+    if (ageSeconds > tolerance) {
+      throw new Error(
+        `Identiq webhook is outside the ${tolerance}s tolerance (created ${payload.createdAt}) — possible replay`,
+      );
+    }
+  }
+
   return payload;
 }
