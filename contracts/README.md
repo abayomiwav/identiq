@@ -40,6 +40,9 @@ Copy the resulting contract id into `backend/.env` as
 credentials it issues as an attester. It is a platform operational key,
 never a user's.
 
+The current testnet deployment and the post-deploy smoke test
+(`scripts/smoke-test.sh`) are documented in [DEPLOYMENTS.md](../DEPLOYMENTS.md).
+
 ## Project structure
 
 ```
