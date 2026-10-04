@@ -1,3 +1,5 @@
+/** Browser client for the Identiq API, plus JWT storage in localStorage. */
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 const TOKEN_KEY = "identiq_token";
 
