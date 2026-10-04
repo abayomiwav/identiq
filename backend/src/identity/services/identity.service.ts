@@ -1,3 +1,8 @@
+/**
+ * Identity lifecycle: link a wallet, confirm on-chain registration, compute
+ * reputation.
+ */
+
 import {
   ConflictException,
   Injectable,
