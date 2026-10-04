@@ -1,3 +1,4 @@
+// Production build config: same as tsconfig.json minus tests.
 {
   "extends": "./tsconfig.json",
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
