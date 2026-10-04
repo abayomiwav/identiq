@@ -1,3 +1,5 @@
+/** Shared frame for the auth pages (login, register and password flows). */
+
 "use client";
 
 import Link from "next/link";
