@@ -1,3 +1,5 @@
+/** Home page hero. */
+
 "use client";
 
 import Link from "next/link";
