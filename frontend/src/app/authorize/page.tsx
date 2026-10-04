@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LogoMark } from "@/components/logo-mark";
 import { useAuth } from "@/context/auth-context";
+import { resolveAllowedRedirect } from "@/lib/redirect";
 import { apiFetch, ApiError } from "@/services/api";
 import type { PublicApp } from "@/types/app";
 import { Alert, Button, Panel, Spinner } from "@/components/ui";
@@ -22,6 +23,9 @@ function AuthorizeContent() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  // Only ever redirect to a URI the app registered — never straight from the query string.
+  const allowedRedirect = app ? resolveAllowedRedirect(redirectUri, app.redirectUris) : null;
+
   useEffect(() => {
     if (!appId) return;
     apiFetch<PublicApp>(`/apps/${appId}/public`, { auth: false })
@@ -36,6 +40,7 @@ function AuthorizeContent() {
   }, [authLoading, user, router]);
 
   async function handleApprove() {
+    if (!allowedRedirect) return;
     setBusy(true);
     setError(null);
     try {
@@ -43,7 +48,7 @@ function AuthorizeContent() {
       for (const credentialType of credentialTypes) {
         await apiFetch("/permissions", { method: "POST", body: { appId, credentialType } });
       }
-      const url = new URL(redirectUri);
+      const url = new URL(allowedRedirect);
       url.searchParams.set("identity_id", identity.id);
       if (state) url.searchParams.set("state", state);
       window.location.href = url.toString();
@@ -58,7 +63,8 @@ function AuthorizeContent() {
   }
 
   function handleDeny() {
-    const url = new URL(redirectUri);
+    if (!allowedRedirect) return;
+    const url = new URL(allowedRedirect);
     url.searchParams.set("error", "access_denied");
     if (state) url.searchParams.set("state", state);
     window.location.href = url.toString();
@@ -66,6 +72,15 @@ function AuthorizeContent() {
 
   if (!appId || !redirectUri || credentialTypes.length === 0) {
     return <Alert>This authorization link is missing required parameters.</Alert>;
+  }
+
+  if (app && !allowedRedirect) {
+    return (
+      <Alert>
+        This authorization link&apos;s redirect URI isn&apos;t registered for {app.name}. For your safety, the request
+        was blocked.
+      </Alert>
+    );
   }
 
   return (
