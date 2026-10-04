@@ -1,3 +1,7 @@
+// Identiq database schema: users, identities, credentials (hash-only
+// evidence), developer apps and permission grants. Run `npx prisma migrate dev`
+// after changing it.
+
 generator client {
   provider = "prisma-client-js"
 }
