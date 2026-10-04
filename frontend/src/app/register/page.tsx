@@ -1,3 +1,5 @@
+/** /register: create an Identiq account. */
+
 "use client";
 
 import Link from "next/link";
