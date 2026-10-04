@@ -95,7 +95,8 @@ export default function PermissionsPage() {
               {grants.map((grant) => (
                 <TableRow key={grant.id}>
                   <TableCell>
-                    <span className="font-mono text-xs">{grant.appId}</span>
+                    <span className="block font-medium">{grant.app.name}</span>
+                    <span className="block font-mono text-xs text-muted">{grant.appId}</span>
                   </TableCell>
                   <TableCell>
                     <span className="font-mono text-xs">{grant.credentialType}</span>
