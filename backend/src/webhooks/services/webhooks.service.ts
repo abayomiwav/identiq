@@ -1,3 +1,5 @@
+/** Delivers HMAC-signed webhook events to apps holding an active grant. */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import {
