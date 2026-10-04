@@ -122,3 +122,33 @@ export function renderPermissionRevokedEmail(params: {
     ),
   };
 }
+
+export function renderVerifyEmail(params: {
+  verifyUrl: string;
+}): RenderedEmail {
+  return {
+    subject: 'Verify your Identiq email address',
+    html: layout(
+      'Confirm your email to finish setting up Identiq',
+      `<h1 style="margin:0 0 12px 0;font-size:20px;color:#f8fafc;">Verify your email</h1>
+       <p style="margin:0;">Confirm this is your address to finish setting up your Identiq account. The link expires in 24 hours.</p>
+       ${button(params.verifyUrl, 'Verify email')}
+       <p style="margin:20px 0 0 0;font-size:13px;color:#94a3b8;">If you didn&rsquo;t create an Identiq account, you can ignore this email.</p>`,
+    ),
+  };
+}
+
+export function renderPasswordResetEmail(params: {
+  resetUrl: string;
+}): RenderedEmail {
+  return {
+    subject: 'Reset your Identiq password',
+    html: layout(
+      'A password reset was requested for your Identiq account',
+      `<h1 style="margin:0 0 12px 0;font-size:20px;color:#f8fafc;">Reset your password</h1>
+       <p style="margin:0;">Someone (hopefully you) asked to reset the password for this account. The link expires in 30 minutes and can only be used once.</p>
+       ${button(params.resetUrl, 'Choose a new password')}
+       <p style="margin:20px 0 0 0;font-size:13px;color:#94a3b8;">If you didn&rsquo;t request this, you can ignore this email &mdash; your password won&rsquo;t change.</p>`,
+    ),
+  };
+}
