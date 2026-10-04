@@ -1,3 +1,8 @@
+/**
+ * @CurrentUser() param decorator and the AuthenticatedUser shape JwtStrategy
+ * attaches to the request.
+ */
+
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
 
