@@ -1,3 +1,8 @@
+/**
+ * /dashboard/permissions: review and revoke which apps can check your
+ * credentials.
+ */
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
