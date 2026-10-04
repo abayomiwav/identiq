@@ -22,6 +22,8 @@ labels: bug
 - OS:
 - Node version:
 - Package version / commit:
+- Network (local / testnet):
+- Browser + wallet (frontend bugs only):
 
 **Additional context**
 <!-- Logs, screenshots, anything else relevant. -->
