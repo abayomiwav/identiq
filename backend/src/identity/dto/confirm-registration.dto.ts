@@ -1,3 +1,8 @@
+/**
+ * Request body for POST /identity/confirm: the wallet-signed register_identity
+ * transaction.
+ */
+
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
