@@ -7,7 +7,7 @@ npm install @identiq/sdk
 ```
 
 ```ts
-import { IdentiqClient, buildAuthorizeUrl, verifyWebhookSignature } from "@identiq/sdk";
+import { IdentiqClient, buildAuthorizeUrl, parseWebhookPayload, verifyWebhookSignature } from "@identiq/sdk";
 
 const identiq = new IdentiqClient({ apiKey: process.env.IDENTIQ_API_KEY! });
 
@@ -25,8 +25,12 @@ const result = await identiq.checkAccess({
 });
 // result.verified — pass/fail only, never the underlying document
 
-// Verifying an incoming webhook:
-verifyWebhookSignature(webhookSecret, rawBody, req.headers["x-identiq-signature"]);
+// Verifying an incoming webhook — signature first, then freshness:
+if (!verifyWebhookSignature(webhookSecret, rawBody, req.headers["x-identiq-signature"])) {
+  throw new Error("bad signature");
+}
+const event = parseWebhookPayload(rawBody); // throws if older than 5 minutes (toleranceSeconds)
+// Also skip events whose event.id you've already processed — retries reuse the id.
 ```
 
 Keep your API key server-side — never ship it to a browser.
