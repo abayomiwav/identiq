@@ -5,9 +5,13 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  Max,
   Min,
   MinLength,
 } from 'class-validator';
+
+/** Upper bound keeps `expiresAt` a valid Date and credentials meaningfully time-boxed. */
+export const MAX_CREDENTIAL_TTL_DAYS = 3650;
 
 export class IssueCredentialDto {
   @ApiProperty({ enum: CredentialType })
@@ -24,10 +28,14 @@ export class IssueCredentialDto {
 
   @ApiProperty({
     required: false,
-    description: 'Override the default validity window, in days.',
+    description:
+      'Override the default validity window, in days (1 to 3650, i.e. at most 10 years).',
+    minimum: 1,
+    maximum: MAX_CREDENTIAL_TTL_DAYS,
   })
   @IsOptional()
   @IsInt()
   @Min(1)
+  @Max(MAX_CREDENTIAL_TTL_DAYS)
   ttlDays?: number;
 }
