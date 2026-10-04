@@ -1,3 +1,5 @@
+/** Generates the 1200x630 social share image. */
+
 import { ImageResponse } from 'next/og';
 
 export const size = { width: 1200, height: 630 };
