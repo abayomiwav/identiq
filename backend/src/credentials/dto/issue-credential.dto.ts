@@ -1,3 +1,8 @@
+/**
+ * Request body for POST /credentials. Evidence is hashed server-side and never
+ * stored.
+ */
+
 import { ApiProperty } from '@nestjs/swagger';
 import { CredentialType } from '@identiq/shared';
 import {
