@@ -1,3 +1,5 @@
+/** Tests for WebhooksService: fan-out to granted apps and payload signing. */
+
 import { Test } from '@nestjs/testing';
 import {
   CredentialType,
