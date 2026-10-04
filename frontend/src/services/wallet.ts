@@ -1,3 +1,8 @@
+/**
+ * Freighter wallet integration: connect and sign transactions client-side
+ * (keys never leave the wallet).
+ */
+
 import {
   getAddress,
   isConnected,
