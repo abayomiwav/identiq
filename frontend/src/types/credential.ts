@@ -1,3 +1,5 @@
+/** Frontend shape for a credential as returned by GET /credentials. */
+
 import { CredentialType } from "@identiq/shared";
 
 export interface Credential {
