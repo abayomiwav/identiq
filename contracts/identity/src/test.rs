@@ -276,3 +276,40 @@ fn rejects_permission_revocation_by_a_non_owner() {
 
     assert_eq!(result, Err(Ok(ContractError::NotAuthorized)));
 }
+
+#[test]
+fn rejects_credential_ttl_that_would_overflow_expiry() {
+    let env = Env::default();
+    env.ledger().set_timestamp(1_700_000_000);
+    let client = setup(&env);
+    let owner = Address::generate(&env);
+    let issuer = Address::generate(&env);
+    let identity_id = client.register_identity(&owner);
+    let credential_type = Symbol::new(&env, "KYC_TIER1");
+
+    let result = client.try_issue_credential(
+        &issuer,
+        &identity_id,
+        &credential_type,
+        &hash(&env, 1),
+        &u64::MAX,
+    );
+
+    assert_eq!(result, Err(Ok(ContractError::InvalidTtl)));
+}
+
+#[test]
+fn rejects_grant_ttl_that_would_overflow_expiry() {
+    let env = Env::default();
+    env.ledger().set_timestamp(1_700_000_000);
+    let client = setup(&env);
+    let owner = Address::generate(&env);
+    let app = Address::generate(&env);
+    let identity_id = client.register_identity(&owner);
+    let credential_type = Symbol::new(&env, "KYC_TIER1");
+
+    let result =
+        client.try_grant_permission(&owner, &identity_id, &app, &credential_type, &u64::MAX);
+
+    assert_eq!(result, Err(Ok(ContractError::InvalidTtl)));
+}

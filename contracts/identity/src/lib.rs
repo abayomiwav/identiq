@@ -159,6 +159,9 @@ impl IdentityContract {
         }
 
         let now = env.ledger().timestamp();
+        let expires_at = now
+            .checked_add(ttl_seconds)
+            .ok_or(ContractError::InvalidTtl)?;
         let id = next_id(&env, DataKey::NextCredentialId);
         let credential = Credential {
             id,
@@ -167,7 +170,7 @@ impl IdentityContract {
             credential_type,
             evidence_hash,
             issued_at: now,
-            expires_at: now + ttl_seconds,
+            expires_at,
             status: Status::Active,
         };
 
@@ -261,6 +264,9 @@ impl IdentityContract {
         }
 
         let now = env.ledger().timestamp();
+        let expires_at = now
+            .checked_add(ttl_seconds)
+            .ok_or(ContractError::InvalidTtl)?;
         let id = next_id(&env, DataKey::NextGrantId);
         let grant = PermissionGrant {
             id,
@@ -268,7 +274,7 @@ impl IdentityContract {
             app,
             credential_type,
             granted_at: now,
-            expires_at: now + ttl_seconds,
+            expires_at,
             status: Status::Active,
         };
 
