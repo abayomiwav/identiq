@@ -1,3 +1,5 @@
+/** /login: email/password sign-in, then return to `next` or the dashboard. */
+
 "use client";
 
 import Link from "next/link";
