@@ -1,3 +1,5 @@
+/** Home page feature grid. */
+
 "use client";
 
 import { motion } from "framer-motion";

@@ -1,3 +1,8 @@
+/**
+ * /dashboard/apps: register developer apps, reveal and rotate API keys, delete
+ * apps.
+ */
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";

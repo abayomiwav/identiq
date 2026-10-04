@@ -1,3 +1,5 @@
+/** Account endpoints: register and log in, both returning a JWT. */
+
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiCreatedResponse,

@@ -1,3 +1,5 @@
+/** Public entrypoint of @identiq/sdk. */
+
 export * from './client/client';
 export * from './utils/authorize-url';
 export * from './utils/webhooks';

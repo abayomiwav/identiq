@@ -1,3 +1,8 @@
+/**
+ * GET /health liveness probe for load balancers and uptime checks (hidden from
+ * Swagger).
+ */
+
 import { Controller, Get } from '@nestjs/common';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
 

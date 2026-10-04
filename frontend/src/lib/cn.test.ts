@@ -1,3 +1,5 @@
+/** Tests for the cn() class-name helper. */
+
 import { describe, expect, it } from "vitest";
 import { cn } from "./cn";
 

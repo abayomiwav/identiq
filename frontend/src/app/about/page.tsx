@@ -1,3 +1,5 @@
+/** /about: why Identiq exists and what it's built on. */
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";

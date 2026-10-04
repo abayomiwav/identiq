@@ -1,3 +1,5 @@
+/** Frontend shapes for developer apps as returned by the API. */
+
 export interface RemoteApp {
   id: string;
   name: string;

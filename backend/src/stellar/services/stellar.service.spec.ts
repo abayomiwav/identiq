@@ -1,3 +1,8 @@
+/**
+ * Tests for StellarService: XDR building, submission polling and platform
+ * signing.
+ */
+
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import {

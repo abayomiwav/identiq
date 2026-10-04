@@ -52,8 +52,9 @@ representing the community in public spaces.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by opening a private security advisory or contacting the
-maintainers directly through GitHub. All complaints will be reviewed and
+reported by opening a private advisory from the repository's
+[Security tab](https://github.com/abayomiwav/identiq/security) or contacting
+the maintainers directly through GitHub. All complaints will be reviewed and
 investigated promptly and fairly.
 
 ## Attribution

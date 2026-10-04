@@ -1,3 +1,5 @@
+/** Frontend shapes for identity, reputation and the registration response. */
+
 export interface Identity {
   id: string;
   userId: string;

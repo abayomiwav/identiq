@@ -1,3 +1,6 @@
+# Issue chooser config: keeps blank issues enabled and routes security reports
+# to private advisories instead of public issues.
+
 blank_issues_enabled: true
 contact_links:
   - name: Report a security vulnerability

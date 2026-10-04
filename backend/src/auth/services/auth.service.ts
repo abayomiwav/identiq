@@ -1,3 +1,5 @@
+/** Account registration and login: bcrypt password hashing and JWT issuing. */
+
 import {
   ConflictException,
   Injectable,

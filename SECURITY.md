@@ -34,3 +34,8 @@ This project runs on testnet with test funds only — there is no mainnet
 deployment and no real user funds at risk today. That said, non-custodial
 key handling and permission-check logic are treated as security-sensitive
 regardless of network, since the same code will run in production.
+
+## Supported versions
+
+Only the latest commit on `main` is supported. There are no tagged releases
+yet, so fixes land on `main` rather than being backported.

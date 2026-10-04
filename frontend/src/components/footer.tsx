@@ -1,3 +1,5 @@
+/** Site footer used on marketing pages. */
+
 import Link from "next/link";
 import { LogoMark } from "./logo-mark";
 

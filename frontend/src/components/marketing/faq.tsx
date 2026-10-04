@@ -1,3 +1,5 @@
+/** Home page FAQ. */
+
 "use client";
 
 import { Disclosure } from "@/components/ui";

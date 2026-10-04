@@ -1,3 +1,5 @@
+/** Top navigation with auth-aware account menu and mobile drawer. */
+
 "use client";
 
 import Link from "next/link";

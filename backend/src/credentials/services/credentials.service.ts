@@ -1,3 +1,8 @@
+/**
+ * Issues and revokes credentials: hashes evidence, anchors it on-chain with
+ * the platform signer, then notifies apps and the owner.
+ */
+
 import {
   BadRequestException,
   ConflictException,

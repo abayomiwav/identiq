@@ -1,3 +1,5 @@
+/** Tests for buildAuthorizeUrl. */
+
 import { CredentialType } from '@identiq/shared';
 import { describe, expect, it } from 'vitest';
 import { buildAuthorizeUrl } from './authorize-url';

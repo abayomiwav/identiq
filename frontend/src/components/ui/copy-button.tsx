@@ -1,3 +1,5 @@
+/** Copy-to-clipboard button with brief confirmation state. */
+
 "use client";
 
 import { useState } from "react";

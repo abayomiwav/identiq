@@ -1,3 +1,5 @@
+/** Inline error/success message box. */
+
 type AlertTone = "error" | "success";
 
 interface AlertProps {

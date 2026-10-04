@@ -1,3 +1,8 @@
+/**
+ * Identity endpoints: link a Stellar wallet, confirm on-chain registration,
+ * read identity and reputation.
+ */
+
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';

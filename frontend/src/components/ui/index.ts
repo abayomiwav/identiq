@@ -1,3 +1,5 @@
+/** Barrel export for the UI primitives. */
+
 export { Button } from "./button";
 export { Panel } from "./panel";
 export { Badge } from "./badge";

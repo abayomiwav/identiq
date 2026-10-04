@@ -1,3 +1,8 @@
+/*
+ * Global styles: Tailwind import, design tokens (colors, borders) and shared
+ * utility classes.
+ */
+
 @import "tailwindcss";
 
 :root {

@@ -1,6 +1,8 @@
+# The identity registry contract crate, built as a cdylib for Soroban.
+
 [package]
 name = "identity"
-version = "0.0.0"
+version = "0.1.0"
 edition = "2021"
 publish = false
 

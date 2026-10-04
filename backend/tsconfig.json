@@ -1,3 +1,5 @@
+// TypeScript settings for @identiq/api (NestJS: decorators and decorator
+// metadata are required).
 {
   "compilerOptions": {
     "module": "nodenext",

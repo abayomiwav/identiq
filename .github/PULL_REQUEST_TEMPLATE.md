@@ -20,5 +20,6 @@ Closes #
 - [ ] `npm run typecheck` passes
 - [ ] `npm run test` passes
 - [ ] `npm run build` passes
+- [ ] `cargo test --workspace` passes in `contracts/` (if the contract changed)
 - [ ] Added/updated tests for new behavior
 - [ ] No secrets, `.env` files, or credentials included in the diff

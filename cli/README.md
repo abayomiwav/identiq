@@ -21,3 +21,5 @@ point config at a different location entirely (used by the test suite).
 npm run build --workspace @identiq/cli
 npm run test --workspace @identiq/cli
 ```
+
+Run `identiq --help` (or `identiq <command> --help`) for every option.

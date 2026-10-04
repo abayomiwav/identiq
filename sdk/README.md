@@ -35,3 +35,6 @@ Keep your API key server-side — never ship it to a browser.
 npm run build --workspace @identiq/sdk
 npm run test --workspace @identiq/sdk
 ```
+
+Errors from the API are thrown as `IdentiqApiError`, carrying the HTTP
+`status` and parsed response `body`.

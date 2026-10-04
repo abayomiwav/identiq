@@ -1,3 +1,8 @@
+/**
+ * Passport strategy validating Identiq bearer JWTs and mapping them to
+ * AuthenticatedUser.
+ */
+
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';

@@ -1,3 +1,4 @@
+// Compiles @identiq/shared to CommonJS with type declarations in dist/.
 {
   "compilerOptions": {
     "target": "ES2022",

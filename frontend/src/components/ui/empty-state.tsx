@@ -1,3 +1,5 @@
+/** Placeholder text for empty lists. */
+
 interface EmptyStateProps {
   children: React.ReactNode;
 }

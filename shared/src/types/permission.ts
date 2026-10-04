@@ -1,3 +1,5 @@
+/** Permission grant domain types shared across workspaces. */
+
 import { CredentialType } from './credential';
 
 export enum PermissionStatus {

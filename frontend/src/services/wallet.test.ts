@@ -1,3 +1,5 @@
+/** Tests for the Freighter wallet wrapper. */
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getAddress, isConnected, signTransaction } from "@stellar/freighter-api";
 import { connectWallet, signWithWallet, WalletError } from "./wallet";

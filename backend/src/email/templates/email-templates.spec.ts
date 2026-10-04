@@ -1,3 +1,5 @@
+/** Tests for the notification email templates' subjects and bodies. */
+
 import {
   renderCredentialIssuedEmail,
   renderCredentialRevokedEmail,

@@ -1,3 +1,5 @@
+/** End-to-end smoke test that boots the full AppModule. */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';

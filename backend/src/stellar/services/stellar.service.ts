@@ -1,3 +1,8 @@
+/**
+ * Soroban integration: builds unsigned XDR for wallets, submits signed
+ * transactions, and signs platform attestations.
+ */
+
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {

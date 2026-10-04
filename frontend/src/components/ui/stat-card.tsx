@@ -1,3 +1,5 @@
+/** Dashboard metric card with an accent color. */
+
 import { Panel } from "./panel";
 
 type StatTone = "accent" | "teal" | "amber" | "rose";

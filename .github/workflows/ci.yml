@@ -1,3 +1,6 @@
+# CI: installs the monorepo, runs lint, typecheck, tests and builds for every
+# workspace against a Postgres service, plus the Soroban contract tests.
+
 name: CI
 
 on:

@@ -1,3 +1,5 @@
+/** Tests for apiFetch: auth header, error mapping and token storage. */
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { apiFetch, ApiError, getToken, setToken } from "./api";
 

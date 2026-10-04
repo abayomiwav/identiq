@@ -1,3 +1,6 @@
+//! Unit tests for the identity contract, run against the Soroban test
+//! environment with mocked auth.
+
 #![cfg(test)]
 
 use super::*;

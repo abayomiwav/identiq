@@ -1,3 +1,8 @@
+/**
+ * Tests for CredentialsService: evidence hashing, on-chain anchoring, TTLs,
+ * revocation and notifications.
+ */
+
 import {
   BadRequestException,
   ConflictException,

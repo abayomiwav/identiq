@@ -1,4 +1,8 @@
 // @ts-check
+/**
+ * ESLint flat config for @identiq/api: type-checked typescript-eslint rules
+ * plus Prettier, run over src/ and test/.
+ */
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';

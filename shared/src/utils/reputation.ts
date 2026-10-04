@@ -6,7 +6,7 @@
  */
 export interface WalletReputation {
   identityId: string;
-  /** 0-100, see docs/REPUTATION.md for the exact formula. */
+  /** 0-100, computed by `computeReputationScore` below. */
   score: number;
   factors: {
     accountAgeDays: number;

@@ -1,3 +1,5 @@
+# Shortcuts for building, testing and formatting the identity contract.
+
 default: build
 
 all: test

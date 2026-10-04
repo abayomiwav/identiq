@@ -1,3 +1,8 @@
+/**
+ * Developer app endpoints: register, list, read, rotate API key and delete
+ * (owner-only), plus the public lookup the consent screen uses.
+ */
+
 import {
   Body,
   Controller,

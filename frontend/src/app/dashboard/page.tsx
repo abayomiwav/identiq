@@ -1,3 +1,8 @@
+/**
+ * /dashboard overview: wallet linking, on-chain registration and reputation
+ * stats.
+ */
+
 "use client";
 
 import { useState } from "react";

@@ -17,3 +17,12 @@ the dashboard you'll also need the [Freighter](https://www.freighter.app/)
 browser extension pointed at Stellar testnet.
 
 Runs with `--webpack` rather than Turbopack — see the root README for why.
+
+## Checks
+
+```bash
+npm run test --workspace @identiq/web       # vitest (jsdom)
+npm run lint --workspace @identiq/web
+npm run typecheck --workspace @identiq/web
+npm run build --workspace @identiq/web
+```

@@ -1,4 +1,5 @@
 // @ts-check
+/** ESLint flat config for @identiq/sdk. */
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 

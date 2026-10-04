@@ -1,3 +1,8 @@
+/**
+ * Tests for AuthService: password hashing, duplicate emails and login
+ * failures.
+ */
+
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';

@@ -328,6 +328,8 @@ impl IdentityContract {
     }
 }
 
+/// Allocates the next sequential id for `key` (identities, credentials and
+/// grants each have their own counter, starting at 1).
 fn next_id(env: &Env, key: DataKey) -> u64 {
     let current: u64 = env.storage().instance().get(&key).unwrap_or(0);
     let next = current + 1;

@@ -1,3 +1,8 @@
+/**
+ * Tests for EmailService: logs in dev, sends via SMTP when configured, never
+ * throws on delivery failure.
+ */
+
 import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import * as nodemailer from 'nodemailer';

@@ -1,3 +1,8 @@
+/**
+ * Webhook event names, payload shape and signature header shared by the API
+ * and SDK.
+ */
+
 export enum WebhookEventType {
   CREDENTIAL_ISSUED = 'credential.issued',
   CREDENTIAL_REVOKED = 'credential.revoked',

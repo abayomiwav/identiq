@@ -10,6 +10,7 @@ export interface IdentiqApp {
   createdAt: string;
 }
 
+/** Fields a developer supplies when registering an app (POST /apps). */
 export interface CreateAppInput {
   name: string;
   redirectUris: string[];

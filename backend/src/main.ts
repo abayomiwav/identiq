@@ -1,3 +1,5 @@
+/** API entrypoint: CORS, global validation, Swagger at /docs, then listen. */
+
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';

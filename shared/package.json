@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "description": "Shared types and constants used across the Identiq API, SDK, CLI, and web app.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abayomiwav/identiq.git",
+    "directory": "shared"
+  },
+  "bugs": {
+    "url": "https://github.com/abayomiwav/identiq/issues"
+  },
+  "homepage": "https://github.com/abayomiwav/identiq#readme",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -17,5 +26,6 @@
   "devDependencies": {
     "typescript": "^5.7.3",
     "vitest": "^3.0.0"
-  }
+  },
+  "license": "MIT"
 }

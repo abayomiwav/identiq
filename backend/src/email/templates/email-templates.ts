@@ -1,3 +1,8 @@
+/**
+ * HTML templates for transactional emails (credential and permission
+ * notifications).
+ */
+
 export interface RenderedEmail {
   subject: string;
   html: string;

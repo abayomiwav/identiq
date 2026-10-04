@@ -1,3 +1,5 @@
+/** Builds the consent-screen URL an app sends its users to. */
+
 import { CredentialType } from '@identiq/shared';
 
 export interface BuildAuthorizeUrlOptions {

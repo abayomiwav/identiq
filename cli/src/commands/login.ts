@@ -1,3 +1,8 @@
+/**
+ * `identiq login`: exchanges email/password for an access token and saves it
+ * locally.
+ */
+
 import { apiRequest } from '../services/api';
 import { CliConfig, resolveApiUrl, saveConfig } from '../config/config';
 

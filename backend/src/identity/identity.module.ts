@@ -1,3 +1,8 @@
+/**
+ * Identity module: one identity per user, anchored to their own Stellar
+ * wallet.
+ */
+
 import { Module } from '@nestjs/common';
 import { StellarModule } from '../stellar/stellar.module';
 import { IdentityController } from './controllers/identity.controller';

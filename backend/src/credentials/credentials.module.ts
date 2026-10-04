@@ -1,3 +1,8 @@
+/**
+ * Credentials module: issuance and revocation, anchored on-chain and fanned
+ * out to webhooks and email.
+ */
+
 import { Module } from '@nestjs/common';
 import { EmailModule } from '../email/email.module';
 import { IdentityModule } from '../identity/identity.module';

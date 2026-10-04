@@ -47,6 +47,7 @@ contracts/
 ├── Cargo.toml              workspace root
 └── identity/
     ├── Cargo.toml
+    ├── Makefile            build / test / fmt shortcuts
     └── src/
         ├── lib.rs           contract implementation
         └── test.rs          unit tests (soroban-sdk testutils)

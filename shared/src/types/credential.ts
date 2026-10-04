@@ -16,6 +16,7 @@ export enum CredentialType {
   BUSINESS_VERIFIED = 'BUSINESS_VERIFIED',
 }
 
+/** Lifecycle of a credential. EXPIRED is derived from `expiresAt`; REVOKED is explicit. */
 export enum CredentialStatus {
   ACTIVE = 'ACTIVE',
   EXPIRED = 'EXPIRED',

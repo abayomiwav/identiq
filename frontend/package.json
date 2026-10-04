@@ -1,6 +1,16 @@
 {
   "name": "@identiq/web",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abayomiwav/identiq.git",
+    "directory": "frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/abayomiwav/identiq/issues"
+  },
+  "homepage": "https://github.com/abayomiwav/identiq#readme",
+  "description": "Identiq web app — landing page, dashboard, developer portal and the /authorize consent screen.",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
@@ -33,5 +43,6 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^3.0.0"
-  }
+  },
+  "license": "MIT"
 }

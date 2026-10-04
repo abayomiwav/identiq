@@ -1,3 +1,5 @@
+/** Modal confirmation for destructive actions, built on <dialog>. */
+
 "use client";
 
 import { useEffect, useRef } from "react";

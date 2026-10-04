@@ -1,3 +1,5 @@
+/** Styled native <select> with optional label. */
+
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
 }

@@ -1,3 +1,8 @@
+/**
+ * IdentiqClient: the server-side API client apps use to check granted
+ * credentials.
+ */
+
 import { CredentialType } from '@identiq/shared';
 import { IdentiqApiError } from '../errors/errors';
 

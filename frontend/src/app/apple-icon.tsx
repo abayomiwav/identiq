@@ -1,3 +1,5 @@
+/** Generates the 180x180 Apple touch icon from the logo mark. */
+
 import { ImageResponse } from 'next/og';
 
 export const size = { width: 180, height: 180 };

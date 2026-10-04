@@ -1,3 +1,5 @@
+/** Frontend shape for a permission grant as returned by GET /permissions. */
+
 import { CredentialType } from "@identiq/shared";
 
 export interface Grant {

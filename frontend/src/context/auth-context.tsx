@@ -1,3 +1,7 @@
+/**
+ * Auth state for the web app: login/register/logout and the persisted session.
+ */
+
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";

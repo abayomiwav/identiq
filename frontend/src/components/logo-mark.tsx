@@ -1,3 +1,5 @@
+/** Identiq logo mark component (SVG). */
+
 interface LogoMarkProps {
   size?: number;
   className?: string;

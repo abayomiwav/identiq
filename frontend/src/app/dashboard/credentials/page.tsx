@@ -1,3 +1,7 @@
+/**
+ * /dashboard/credentials: issue and revoke the signed-in user's credentials.
+ */
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";

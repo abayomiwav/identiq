@@ -1,3 +1,8 @@
+/**
+ * Typed configuration tree loaded by ConfigModule, built from environment
+ * variables with local-dev defaults.
+ */
+
 export default () => ({
   port: parseInt(process.env.PORT ?? '3000', 10),
   jwt: {

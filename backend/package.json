@@ -2,9 +2,17 @@
   "name": "@identiq/api",
   "version": "0.1.0",
   "description": "Identiq API — decentralized identity infrastructure on Stellar. Verify once, access everywhere.",
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abayomiwav/identiq.git",
+    "directory": "backend"
+  },
+  "bugs": {
+    "url": "https://github.com/abayomiwav/identiq/issues"
+  },
+  "homepage": "https://github.com/abayomiwav/identiq#readme",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

@@ -1,3 +1,7 @@
+/**
+ * Loads the signed-in user's identity (and reputation once anchored on-chain).
+ */
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";

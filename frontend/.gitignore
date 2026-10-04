@@ -1,3 +1,5 @@
+# Next.js app ignores: dependencies, build output, coverage and local env files.
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

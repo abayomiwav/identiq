@@ -1,3 +1,5 @@
+/** Expandable <details> row, used by the FAQ. */
+
 interface DisclosureProps {
   summary: string;
   children: React.ReactNode;

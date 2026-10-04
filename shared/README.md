@@ -10,3 +10,7 @@ consumed directly from `src/`.
 npm run typecheck --workspace @identiq/shared
 npm run test --workspace @identiq/shared
 ```
+
+```ts
+import { CredentialType, computeReputationScore } from "@identiq/shared";
+```

@@ -1,3 +1,5 @@
+/** Tests for computeReputationScore. */
+
 import { describe, expect, it } from 'vitest';
 import { computeReputationScore } from './reputation';
 

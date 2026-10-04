@@ -1,3 +1,5 @@
+/** Root Nest module: global config/validation plus every feature module. */
+
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppsModule } from './apps/apps.module';

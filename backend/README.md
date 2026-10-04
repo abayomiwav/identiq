@@ -23,6 +23,8 @@ contract those values point at.
 ```bash
 npm run test --workspace @identiq/api        # unit tests, no DB required
 npm run test:e2e --workspace @identiq/api    # requires DATABASE_URL
+npm run lint --workspace @identiq/api
+npm run typecheck --workspace @identiq/api
 ```
 
 ## Structure

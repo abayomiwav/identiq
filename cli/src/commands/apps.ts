@@ -1,3 +1,5 @@
+/** API helpers behind `identiq apps`: create, list and rotate keys. */
+
 import { apiRequest } from '../services/api';
 import { requireConfig } from '../config/config';
 

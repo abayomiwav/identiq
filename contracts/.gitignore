@@ -1,3 +1,6 @@
+# Ignores Rust build output, local Stellar CLI state and regenerated test
+# snapshots.
+
 # Rust's output directory
 target
 
