@@ -118,6 +118,44 @@ describe('CredentialsService', () => {
       );
     });
 
+    it('rejects a type the identity already holds, before touching the chain', async () => {
+      prisma.credential.findFirst.mockResolvedValue({ id: 'existing-cred' });
+
+      await expect(
+        service.issueCredential('user-1', {
+          type: CredentialType.EMAIL_VERIFIED,
+          evidence: 'evidence',
+        }),
+      ).rejects.toThrow(ConflictException);
+
+      expect(prisma.credential.findFirst).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: expect.objectContaining({
+            identityId: 'identity-1',
+            type: CredentialType.EMAIL_VERIFIED,
+            status: 'ACTIVE',
+          }) as unknown,
+        }),
+      );
+      expect(stellarService.issueCredentialOnChain).not.toHaveBeenCalled();
+      expect(prisma.credential.create).not.toHaveBeenCalled();
+    });
+
+    it('allows re-issuing once no active credential of that type remains', async () => {
+      prisma.credential.findFirst.mockResolvedValue(null);
+      prisma.credential.create.mockImplementation(({ data }) => ({
+        id: 'cred-2',
+        ...data,
+      }));
+
+      const result = await service.issueCredential('user-1', {
+        type: CredentialType.EMAIL_VERIFIED,
+        evidence: 'evidence',
+      });
+
+      expect(result.id).toBe('cred-2');
+    });
+
     it('applies the default TTL for the credential type when none is given', async () => {
       prisma.credential.create.mockImplementation(({ data }) => ({
         id: 'cred-1',

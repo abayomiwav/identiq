@@ -54,6 +54,22 @@ export class CredentialsService {
       );
     }
 
+    const now = new Date();
+    const alreadyHeld = await this.prisma.credential.findFirst({
+      where: {
+        identityId: identity.id,
+        type: dto.type,
+        status: 'ACTIVE',
+        OR: [{ expiresAt: null }, { expiresAt: { gt: now } }],
+      },
+      select: { id: true },
+    });
+    if (alreadyHeld) {
+      throw new ConflictException(
+        `An active ${dto.type} credential already exists — revoke it before issuing a new one`,
+      );
+    }
+
     const evidenceHash = hashEvidence(dto.evidence);
     const ttlDays = dto.ttlDays ?? DEFAULT_CREDENTIAL_TTL_DAYS[dto.type];
     const expiresAt = ttlDays
