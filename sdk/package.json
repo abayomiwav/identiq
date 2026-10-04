@@ -2,6 +2,15 @@
   "name": "@identiq/sdk",
   "version": "0.1.0",
   "description": "Official TypeScript SDK for Identiq — check what a user has permitted your app to see, without ever touching their documents.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abayomiwav/identiq.git",
+    "directory": "sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/abayomiwav/identiq/issues"
+  },
+  "homepage": "https://github.com/abayomiwav/identiq#readme",
   "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
