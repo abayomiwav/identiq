@@ -1,3 +1,8 @@
+/**
+ * Tests for the CLI's HTTP helper: auth header, JSON handling and error
+ * mapping.
+ */
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { apiRequest, CliApiError } from './api';
 
