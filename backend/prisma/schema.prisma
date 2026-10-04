@@ -37,6 +37,8 @@ model User {
   id           String   @id @default(uuid())
   email        String   @unique
   passwordHash String
+  /// Set once the user clicks the link emailed on registration.
+  emailVerifiedAt DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

@@ -3,6 +3,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiCreatedResponse,
+  ApiNoContentResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -10,6 +11,11 @@ import {
 import { AuthResult, AuthService } from '../services/auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { RegisterDto } from '../dto/register.dto';
+import {
+  EmailOnlyDto,
+  ResetPasswordDto,
+  VerifyEmailDto,
+} from '../dto/token.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -30,5 +36,37 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Invalid email or password.' })
   login(@Body() dto: LoginDto): Promise<AuthResult> {
     return this.authService.login(dto);
+  }
+
+  @Post('verify-email')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'Email address marked as verified.' })
+  verifyEmail(@Body() dto: VerifyEmailDto): Promise<{ emailVerified: true }> {
+    return this.authService.verifyEmail(dto.token);
+  }
+
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse({
+    description: 'Sends a new link if the account exists and is unverified.',
+  })
+  resendVerification(@Body() dto: EmailOnlyDto): Promise<void> {
+    return this.authService.resendVerification(dto.email);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse({
+    description: 'Emails a reset link if the account exists.',
+  })
+  forgotPassword(@Body() dto: EmailOnlyDto): Promise<void> {
+    return this.authService.forgotPassword(dto.email);
+  }
+
+  @Post('reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse({ description: 'Password updated.' })
+  resetPassword(@Body() dto: ResetPasswordDto): Promise<void> {
+    return this.authService.resetPassword(dto.token, dto.password);
   }
 }

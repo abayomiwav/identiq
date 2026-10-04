@@ -32,7 +32,7 @@ export default function RegisterPage() {
     setSubmitting(true);
     try {
       await register(email, password);
-      toast.success("Account created");
+      toast.success("Account created. Check your inbox to verify your email.");
       router.push("/dashboard");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");

@@ -7,6 +7,8 @@ import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
+import { EmailService } from '../../email/services/email.service';
 import { PrismaService } from '../../prisma/services/prisma.service';
 import { AuthService } from './auth.service';
 
@@ -29,6 +31,8 @@ describe('AuthService', () => {
         AuthService,
         { provide: PrismaService, useValue: prisma },
         { provide: JwtService, useValue: jwtService },
+        { provide: EmailService, useValue: { send: jest.fn() } },
+        { provide: ConfigService, useValue: { get: jest.fn() } },
       ],
     }).compile();
 
@@ -54,7 +58,11 @@ describe('AuthService', () => {
         await bcrypt.compare('password123', createdData.passwordHash),
       ).toBe(true);
       expect(result.accessToken).toBe('signed.jwt.token');
-      expect(result.user).toEqual({ id: 'user-1', email: 'a@identiq.app' });
+      expect(result.user).toEqual({
+        id: 'user-1',
+        email: 'a@identiq.app',
+        emailVerified: false,
+      });
     });
 
     it('rejects registration for an email already in use', async () => {

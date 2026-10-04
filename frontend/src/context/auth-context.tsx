@@ -10,6 +10,7 @@ import { apiFetch, getToken, setToken } from "@/services/api";
 export interface AuthUser {
   id: string;
   email: string;
+  emailVerified?: boolean;
 }
 
 interface AuthResponse {
