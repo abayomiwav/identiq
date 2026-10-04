@@ -1,3 +1,5 @@
+/** Generates the 32x32 favicon from the logo mark. */
+
 import { ImageResponse } from 'next/og';
 
 export const size = { width: 32, height: 32 };
