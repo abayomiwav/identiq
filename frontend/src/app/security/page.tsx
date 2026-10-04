@@ -1,3 +1,5 @@
+/** /security: how the non-custodial, hash-only architecture works. */
+
 import type { Metadata } from "next";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
