@@ -1,3 +1,5 @@
+/** Home page three-step explainer: verify once, grant access, apps check. */
+
 "use client";
 
 import { motion } from "framer-motion";
