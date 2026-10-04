@@ -3,11 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { applySecurityHeaders } from './common/security';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
+  applySecurityHeaders(app);
   app.enableCors({
     origin: configService.get<string>('corsOrigin'),
     credentials: true,
