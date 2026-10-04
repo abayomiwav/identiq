@@ -1,3 +1,7 @@
+/**
+ * Credentials REST endpoints for the signed-in user: issue, list, and revoke.
+ */
+
 import {
   Body,
   Controller,
