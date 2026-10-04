@@ -1,3 +1,8 @@
+/**
+ * Validates environment variables at startup so the API fails fast on missing
+ * or malformed config.
+ */
+
 import 'reflect-metadata';
 import { plainToInstance } from 'class-transformer';
 import {
