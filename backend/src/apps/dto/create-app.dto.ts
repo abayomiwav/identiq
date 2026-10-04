@@ -7,6 +7,7 @@ import {
   IsUrl,
   MinLength,
 } from 'class-validator';
+import { IsPublicWebhookUrl } from '../../common/validators/public-webhook-url.validator';
 
 export class CreateAppDto {
   @ApiProperty({ example: 'Acme Marketplace' })
@@ -26,8 +27,11 @@ export class CreateAppDto {
   @ApiProperty({
     required: false,
     example: 'https://acme.example/webhooks/identiq',
+    description:
+      'Where Identiq POSTs signed events. In production it must be a public https URL — localhost and private/link-local IPs are rejected.',
   })
   @IsOptional()
   @IsUrl({ require_tld: false })
+  @IsPublicWebhookUrl()
   webhookUrl?: string;
 }
