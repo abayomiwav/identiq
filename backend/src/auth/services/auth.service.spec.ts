@@ -46,7 +46,8 @@ describe('AuthService', () => {
         password: 'password123',
       });
 
-      const createdData = prisma.user.create.mock.calls[0][0].data;
+      const [createArgs] = prisma.user.create.mock.calls[0] as [UserCreateArgs];
+      const createdData = createArgs.data;
       expect(createdData.passwordHash).not.toBe('password123');
       expect(
         await bcrypt.compare('password123', createdData.passwordHash),
