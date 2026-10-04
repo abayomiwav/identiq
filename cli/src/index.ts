@@ -5,6 +5,7 @@ import { login } from './commands/login';
 import { logout } from './commands/logout';
 import { whoami } from './commands/whoami';
 import { CliApiError } from './services/api';
+import { resolvePassword } from './services/password';
 
 const program = new Command();
 
@@ -14,10 +15,14 @@ program
   .command('login')
   .description('Authenticate with your Identiq account')
   .requiredOption('-e, --email <email>', 'account email')
-  .requiredOption('-p, --password <password>', 'account password')
+  .option(
+    '-p, --password <password>',
+    'account password (avoid: prefer the prompt or IDENTIQ_PASSWORD, which stay out of shell history)',
+  )
   .option('--api-url <url>', 'override the Identiq API base URL')
-  .action(async (opts: { email: string; password: string; apiUrl?: string }) => {
-    const config = await login(opts);
+  .action(async (opts: { email: string; password?: string; apiUrl?: string }) => {
+    const password = await resolvePassword({ flag: opts.password });
+    const config = await login({ ...opts, password });
     console.log(`Logged in as ${config.email} (${config.apiUrl})`);
   });
 
