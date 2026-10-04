@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { chmodSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
@@ -32,10 +32,14 @@ export function loadConfig(): CliConfig | null {
 export function saveConfig(config: CliConfig): void {
   const dir = configDir();
   if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
+    mkdirSync(dir, { recursive: true, mode: 0o700 });
   }
-  // Owner-only permissions — this file holds a live access token.
-  writeFileSync(configPath(), JSON.stringify(config, null, 2), { mode: 0o600 });
+  // Owner-only permissions — this file holds a live access token. `mode` on
+  // writeFileSync only applies when the file is created, so chmod explicitly
+  // to tighten a file that already existed with looser permissions.
+  const path = configPath();
+  writeFileSync(path, JSON.stringify(config, null, 2), { mode: 0o600 });
+  chmodSync(path, 0o600);
 }
 
 export function clearConfig(): void {
