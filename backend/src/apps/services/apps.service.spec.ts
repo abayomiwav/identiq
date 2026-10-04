@@ -1,3 +1,8 @@
+/**
+ * Tests for AppsService: key generation, ownership checks and secret
+ * sanitizing.
+ */
+
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../prisma/services/prisma.service';
