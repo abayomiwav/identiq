@@ -5,6 +5,9 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/services/prisma.service';
 import { AuthService } from './auth.service';
 
+/** Shape of the argument AuthService passes to `prisma.user.create`. */
+type UserCreateArgs = { data: { email: string; passwordHash: string } };
+
 describe('AuthService', () => {
   let service: AuthService;
   let prisma: { user: { findUnique: jest.Mock; create: jest.Mock } };
