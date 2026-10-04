@@ -1,3 +1,8 @@
+/**
+ * Developer apps module: registering third-party apps, API keys and webhook
+ * settings.
+ */
+
 import { Module } from '@nestjs/common';
 import { AppsController } from './controllers/apps.controller';
 import { AppsService } from './services/apps.service';
