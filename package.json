@@ -3,6 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "description": "Identiq — Verify Once. Access Everywhere. Decentralized identity infrastructure on Stellar.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abayomiwav/identiq.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abayomiwav/identiq/issues"
+  },
+  "homepage": "https://github.com/abayomiwav/identiq#readme",
+  "license": "MIT",
+  "keywords": [
+    "stellar",
+    "soroban",
+    "identity",
+    "kyc",
+    "verifiable-credentials"
+  ],
   "workspaces": [
     "frontend",
     "backend",
