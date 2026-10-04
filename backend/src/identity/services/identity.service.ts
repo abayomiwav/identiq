@@ -70,6 +70,14 @@ export class IdentityService {
       throw new ConflictException('Identity is already registered on-chain');
     }
 
+    if (!identity.stellarPublicKey) {
+      throw new ConflictException('Identity has no linked Stellar address');
+    }
+    this.stellarService.assertRegisterIdentityXdr(
+      dto.signedXdr,
+      identity.stellarPublicKey,
+    );
+
     const { returnValue } = await this.stellarService.submitSignedTransaction(
       dto.signedXdr,
     );
