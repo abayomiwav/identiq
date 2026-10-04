@@ -1,3 +1,5 @@
+/** Tests for IdentiqClient. */
+
 import { CredentialType } from '@identiq/shared';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { IdentiqClient } from './client';
