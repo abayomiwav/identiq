@@ -9,11 +9,20 @@ import { WebhooksService } from './webhooks.service';
 
 describe('WebhooksService', () => {
   let service: WebhooksService;
-  let prisma: { permissionGrant: { findMany: jest.Mock } };
+  let prisma: {
+    permissionGrant: { findMany: jest.Mock };
+    webhookDelivery: { create: jest.Mock; update: jest.Mock };
+  };
   let fetchMock: jest.Mock;
 
   beforeEach(async () => {
-    prisma = { permissionGrant: { findMany: jest.fn() } };
+    prisma = {
+      permissionGrant: { findMany: jest.fn() },
+      webhookDelivery: {
+        create: jest.fn().mockResolvedValue({ id: 'delivery-1' }),
+        update: jest.fn().mockResolvedValue({}),
+      },
+    };
     fetchMock = jest.fn().mockResolvedValue({ ok: true, status: 200 });
     global.fetch = fetchMock;
 
@@ -105,5 +114,75 @@ describe('WebhooksService', () => {
         {},
       ),
     ).resolves.not.toThrow();
+  });
+
+  describe('delivery retries', () => {
+    const app = {
+      id: 'app-1',
+      webhookUrl: 'https://app1.example/hook',
+      webhookSecret: 'secret-1',
+    } as never;
+
+    beforeEach(() => {
+      service.retryDelaysMs = [0, 0, 0];
+    });
+
+    const flush = () => new Promise((resolve) => setTimeout(resolve, 20));
+
+    it('records a successful first attempt as SUCCEEDED', async () => {
+      await service.dispatch(app, WebhookEventType.CREDENTIAL_ISSUED, {});
+
+      expect(prisma.webhookDelivery.create).toHaveBeenCalledTimes(1);
+      expect(prisma.webhookDelivery.update).toHaveBeenCalledWith({
+        where: { id: 'delivery-1' },
+        data: expect.objectContaining({ attempts: 1, status: 'SUCCEEDED' }),
+      });
+    });
+
+    it('retries 5xx and network errors until it succeeds', async () => {
+      fetchMock
+        .mockResolvedValueOnce({ ok: false, status: 503 })
+        .mockRejectedValueOnce(new Error('ECONNREFUSED'))
+        .mockResolvedValueOnce({ ok: true, status: 200 });
+
+      await service.dispatch(app, WebhookEventType.CREDENTIAL_ISSUED, {});
+      await flush();
+
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(prisma.webhookDelivery.update).toHaveBeenLastCalledWith({
+        where: { id: 'delivery-1' },
+        data: expect.objectContaining({ attempts: 3, status: 'SUCCEEDED' }),
+      });
+    });
+
+    it('marks the delivery FAILED once retries are exhausted', async () => {
+      fetchMock.mockResolvedValue({ ok: false, status: 500 });
+
+      await service.dispatch(app, WebhookEventType.CREDENTIAL_ISSUED, {});
+      await flush();
+
+      expect(fetchMock).toHaveBeenCalledTimes(4);
+      expect(prisma.webhookDelivery.update).toHaveBeenLastCalledWith({
+        where: { id: 'delivery-1' },
+        data: expect.objectContaining({
+          attempts: 4,
+          status: 'FAILED',
+          lastStatus: 500,
+        }),
+      });
+    });
+
+    it('does not retry a 4xx rejection', async () => {
+      fetchMock.mockResolvedValue({ ok: false, status: 400 });
+
+      await service.dispatch(app, WebhookEventType.CREDENTIAL_ISSUED, {});
+      await flush();
+
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(prisma.webhookDelivery.update).toHaveBeenCalledWith({
+        where: { id: 'delivery-1' },
+        data: expect.objectContaining({ status: 'FAILED', lastStatus: 400 }),
+      });
+    });
   });
 });
