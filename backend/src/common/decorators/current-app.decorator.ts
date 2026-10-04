@@ -1,3 +1,8 @@
+/**
+ * @CurrentApp() param decorator: the third-party app ApiKeyGuard authenticated
+ * for this request.
+ */
+
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
 import { AuthenticatedApp } from '../guards/api-key.guard';
