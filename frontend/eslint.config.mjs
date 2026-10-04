@@ -1,3 +1,8 @@
+/**
+ * ESLint flat config for the web app: Next core-web-vitals and TypeScript
+ * rules, with documented exceptions.
+ */
+
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
