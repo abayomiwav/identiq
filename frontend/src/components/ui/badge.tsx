@@ -1,3 +1,5 @@
+/** Small status badge (e.g. ACTIVE / EXPIRED / REVOKED). */
+
 type BadgeTone = "success" | "warning" | "danger" | "neutral";
 
 interface BadgeProps {
