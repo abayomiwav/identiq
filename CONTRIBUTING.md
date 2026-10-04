@@ -89,3 +89,35 @@ do not open a public issue — see [SECURITY.md](./SECURITY.md) instead.
 
 This project follows the [Code of Conduct](./CODE_OF_CONDUCT.md). By
 participating, you're expected to uphold it.
+
+## Contributors
+
+Thanks to everyone who has contributed to Identiq:
+
+| Contributor | GitHub |
+| --- | --- |
+| abayomiwav | [@abayomiwav](https://github.com/abayomiwav) |
+| abayomicornelius | [@abayomicornelius](https://github.com/abayomicornelius) |
+| boluwacodes | [@boluwacodes](https://github.com/boluwacodes) |
+| chonilius | [@chonilius](https://github.com/chonilius) |
+| choniszn1 | [@choniszn1](https://github.com/choniszn1) |
+| circleboyslimited | [@circleboyslimited](https://github.com/circleboyslimited) |
+| davidishere1 | [@davidishere1](https://github.com/davidishere1) |
+| Derinsolababy | [@Derinsolababy](https://github.com/Derinsolababy) |
+| floraispretty | [@floraispretty](https://github.com/floraispretty) |
+| gideononiru | [@gideononiru](https://github.com/gideononiru) |
+| jakespepe | [@jakespepe](https://github.com/jakespepe) |
+| laurastephaniee | [@laurastephaniee](https://github.com/laurastephaniee) |
+| miraclesonly | [@miraclesonly](https://github.com/miraclesonly) |
+| oluwarantimini | [@oluwarantimini](https://github.com/oluwarantimini) |
+| onejasonn | [@onejasonn](https://github.com/onejasonn) |
+| posimideveloper | [@posimideveloper](https://github.com/posimideveloper) |
+| praizehimm | [@praizehimm](https://github.com/praizehimm) |
+| presidoclintonbased-alt | [@presidoclintonbased-alt](https://github.com/presidoclintonbased-alt) |
+| presidojay1 | [@presidojay1](https://github.com/presidojay1) |
+| prodbycorne | [@prodbycorne](https://github.com/prodbycorne) |
+| richardtoms100 | [@richardtoms100](https://github.com/richardtoms100) |
+| Smoothjane | [@Smoothjane](https://github.com/Smoothjane) |
+| springswell | [@springswell](https://github.com/springswell) |
+| Temi-suwa18 | [@Temi-suwa18](https://github.com/Temi-suwa18) |
+| alansamdev | [@alansamdev](https://github.com/alansamdev) |
