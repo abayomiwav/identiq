@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { createApp, listApps, rotateApiKey } from './commands/apps';
+import { createInterface } from 'node:readline/promises';
+import { createApp, deleteApp, listApps, rotateApiKey } from './commands/apps';
 import { login } from './commands/login';
 import { logout } from './commands/logout';
 import { whoami } from './commands/whoami';
@@ -74,6 +75,28 @@ apps
     const rotated = await rotateApiKey(appId);
     console.log(`New API key: ${rotated.apiKey}`);
     console.log('Save this key now — it will not be shown again.');
+  });
+
+apps
+  .command('delete')
+  .description('Delete an app — this also removes every user’s permission grant to it')
+  .argument('<appId>', 'app id')
+  .option('-y, --yes', 'skip the confirmation prompt')
+  .action(async (appId: string, opts: { yes?: boolean }) => {
+    if (!opts.yes) {
+      if (!process.stdin.isTTY) {
+        throw new Error('Refusing to delete without confirmation. Re-run with --yes.');
+      }
+      const rl = createInterface({ input: process.stdin, output: process.stdout });
+      const answer = await rl.question(`Delete app ${appId} and all user grants to it? Type the app id to confirm: `);
+      rl.close();
+      if (answer.trim() !== appId) {
+        console.log('Aborted.');
+        return;
+      }
+    }
+    await deleteApp(appId);
+    console.log(`Deleted app ${appId}.`);
   });
 
 program.parseAsync(process.argv).catch((error: unknown) => {

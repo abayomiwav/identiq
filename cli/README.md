@@ -9,6 +9,7 @@ identiq login --email you@example.com --password ********
 identiq apps create "Acme Marketplace" --redirect-uri https://acme.example/callback
 identiq apps list
 identiq apps rotate-key <appId>
+identiq apps delete <appId>        # asks you to type the id; --yes to skip
 identiq whoami
 identiq logout
 ```
