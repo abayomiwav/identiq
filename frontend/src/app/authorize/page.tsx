@@ -1,3 +1,8 @@
+/**
+ * /authorize consent screen: an app asks to check credentials; the user
+ * approves or denies.
+ */
+
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
