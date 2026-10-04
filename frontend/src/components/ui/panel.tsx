@@ -1,3 +1,5 @@
+/** Bordered content panel, optionally with decorative corner ticks. */
+
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
   cornerTicks?: boolean;
 }
